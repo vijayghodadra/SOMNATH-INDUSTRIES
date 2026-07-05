@@ -18,11 +18,7 @@ export default function Gallery() {
       category: 'factory',
       image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=800&auto=format&fit=crop'
     },
-    {
-      title: 'Cleaned Raw Peanuts',
-      category: 'products',
-      image: 'https://images.unsplash.com/photo-1567894340315-735d7c361db0?q=80&w=800&auto=format&fit=crop'
-    },
+
     {
       title: 'Pneumatic Bag Stacking',
       category: 'packing',
