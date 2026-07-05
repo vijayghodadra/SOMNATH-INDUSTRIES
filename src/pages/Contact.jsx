@@ -247,7 +247,7 @@ export default function Contact() {
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
-                      placeholder="e.g. Rajesh Kumar"
+                      placeholder="e.g. Sagar Gondaliya"
                       className={`w-full px-4 py-3 rounded-lg border bg-[#0F1115] text-sm text-white outline-none transition-colors ${
                         errors.name ? 'border-red-500 focus:border-red-500' : 'border-white/5 focus:border-accent'
                       }`}
@@ -297,7 +297,7 @@ export default function Contact() {
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
-                      placeholder="e.g. rajesh@company.com"
+                      placeholder="e.g. sagar.gondaliya@somnathindustries.info"
                       className={`w-full px-4 py-3 rounded-lg border bg-[#0F1115] text-sm text-white outline-none transition-colors ${
                         errors.email ? 'border-red-500 focus:border-red-500' : 'border-white/5 focus:border-accent'
                       }`}
@@ -321,7 +321,7 @@ export default function Contact() {
                       name="business"
                       value={formData.business}
                       onChange={handleChange}
-                      placeholder="e.g. Agro Export House"
+                      placeholder="e.g. Somnath Industries"
                       className="w-full px-4 py-3 rounded-lg border border-white/5 bg-[#0F1115] text-sm text-white outline-none focus:border-accent transition-colors"
                     />
                   </div>
