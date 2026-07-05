@@ -163,25 +163,25 @@ export default function Home() {
         </motion.div>
 
         {/* Floating statistics cards */}
-        <div className="absolute bottom-[10%] left-4 right-4 sm:left-10 sm:right-10 z-20 flex flex-wrap items-center justify-center gap-6 md:justify-around max-w-7xl mx-auto pt-8 border-t border-white/5 bg-[#181B22]/40 backdrop-blur-md rounded-2xl p-6 border border-white/5">
-          <div className="text-center">
-            <span className="font-display font-extrabold text-3xl sm:text-4xl text-accent block">15+</span>
-            <span className="text-[10px] text-[#D9D9D9] uppercase tracking-widest font-semibold font-sans mt-1 block">Years Experience</span>
+        <div className="relative lg:absolute lg:bottom-[10%] left-4 right-4 lg:left-10 lg:right-10 z-20 flex flex-wrap items-center justify-center gap-y-8 gap-x-4 md:justify-around max-w-7xl mx-auto mt-12 lg:mt-0 bg-[#181B22]/40 backdrop-blur-md rounded-2xl p-6 border border-white/5">
+          <div className="text-center w-[calc(50%-12px)] md:w-auto flex-shrink-0">
+            <span className="font-display font-extrabold text-2xl sm:text-4xl text-accent block">15+</span>
+            <span className="text-[9px] sm:text-[10px] text-[#D9D9D9] uppercase tracking-wide md:tracking-widest font-semibold font-sans mt-1 block">Years Experience</span>
           </div>
           <div className="h-8 w-[1px] bg-white/5 hidden md:block" />
-          <div className="text-center">
-            <span className="font-display font-extrabold text-3xl sm:text-4xl text-white block">99.9%</span>
-            <span className="text-[10px] text-[#D9D9D9] uppercase tracking-widest font-semibold font-sans mt-1 block">Optical Purity</span>
+          <div className="text-center w-[calc(50%-12px)] md:w-auto flex-shrink-0">
+            <span className="font-display font-extrabold text-2xl sm:text-4xl text-white block">99.9%</span>
+            <span className="text-[9px] sm:text-[10px] text-[#D9D9D9] uppercase tracking-wide md:tracking-widest font-semibold font-sans mt-1 block">Optical Purity</span>
           </div>
           <div className="h-8 w-[1px] bg-white/5 hidden md:block" />
-          <div className="text-center">
-            <span className="font-display font-extrabold text-3xl sm:text-4xl text-accent block">200+</span>
-            <span className="text-[10px] text-[#D9D9D9] uppercase tracking-widest font-semibold font-sans mt-1 block">Happy Clients</span>
+          <div className="text-center w-[calc(50%-12px)] md:w-auto flex-shrink-0">
+            <span className="font-display font-extrabold text-2xl sm:text-4xl text-accent block">200+</span>
+            <span className="text-[9px] sm:text-[10px] text-[#D9D9D9] uppercase tracking-wide md:tracking-widest font-semibold font-sans mt-1 block">Happy Clients</span>
           </div>
           <div className="h-8 w-[1px] bg-white/5 hidden md:block" />
-          <div className="text-center">
-            <span className="font-display font-extrabold text-3xl sm:text-4xl text-white block">10,000+</span>
-            <span className="text-[10px] text-[#D9D9D9] uppercase tracking-widest font-semibold font-sans mt-1 block">Tons Processed</span>
+          <div className="text-center w-[calc(50%-12px)] md:w-auto flex-shrink-0">
+            <span className="font-display font-extrabold text-2xl sm:text-4xl text-white block">10,000+</span>
+            <span className="text-[9px] sm:text-[10px] text-[#D9D9D9] uppercase tracking-wide md:tracking-widest font-semibold font-sans mt-1 block">Tons Processed</span>
           </div>
         </div>
 
