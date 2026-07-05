@@ -133,7 +133,7 @@ export default function Home() {
 
       {/* 1. HERO SECTION */}
       <section 
-        className="relative min-h-screen flex items-center justify-center overflow-hidden py-20 px-4 sm:px-6 lg:px-8"
+        className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden py-20 px-4 sm:px-6 lg:px-8"
         onMouseMove={handleMouseMove}
       >
         {/* Cinematic Industrial Background Overlay */}
@@ -162,82 +162,85 @@ export default function Home() {
           </div>
         </motion.div>
 
-        {/* Floating statistics cards */}
-        <div className="relative lg:absolute lg:bottom-[10%] left-4 right-4 lg:left-10 lg:right-10 z-20 flex flex-wrap items-center justify-center gap-y-8 gap-x-4 md:justify-around max-w-7xl mx-auto mt-12 lg:mt-0 bg-[#181B22]/40 backdrop-blur-md rounded-2xl p-6 border border-white/5">
-          <div className="text-center w-[calc(50%-12px)] md:w-auto flex-shrink-0">
-            <span className="font-display font-extrabold text-2xl sm:text-4xl text-accent block">15+</span>
-            <span className="text-[9px] sm:text-[10px] text-[#D9D9D9] uppercase tracking-wide md:tracking-widest font-semibold font-sans mt-1 block">Years Experience</span>
-          </div>
-          <div className="h-8 w-[1px] bg-white/5 hidden md:block" />
-          <div className="text-center w-[calc(50%-12px)] md:w-auto flex-shrink-0">
-            <span className="font-display font-extrabold text-2xl sm:text-4xl text-white block">99.9%</span>
-            <span className="text-[9px] sm:text-[10px] text-[#D9D9D9] uppercase tracking-wide md:tracking-widest font-semibold font-sans mt-1 block">Optical Purity</span>
-          </div>
-          <div className="h-8 w-[1px] bg-white/5 hidden md:block" />
-          <div className="text-center w-[calc(50%-12px)] md:w-auto flex-shrink-0">
-            <span className="font-display font-extrabold text-2xl sm:text-4xl text-accent block">200+</span>
-            <span className="text-[9px] sm:text-[10px] text-[#D9D9D9] uppercase tracking-wide md:tracking-widest font-semibold font-sans mt-1 block">Happy Clients</span>
-          </div>
-          <div className="h-8 w-[1px] bg-white/5 hidden md:block" />
-          <div className="text-center w-[calc(50%-12px)] md:w-auto flex-shrink-0">
-            <span className="font-display font-extrabold text-2xl sm:text-4xl text-white block">10,000+</span>
-            <span className="text-[9px] sm:text-[10px] text-[#D9D9D9] uppercase tracking-wide md:tracking-widest font-semibold font-sans mt-1 block">Tons Processed</span>
-          </div>
-        </div>
-
-        {/* Hero content */}
-        <div className="relative z-20 max-w-5xl mx-auto text-center space-y-8 pb-32">
-          <motion.div
-            initial={{ opacity: 0, y: -15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="inline-flex items-center space-x-2 bg-white/5 border border-white/10 px-4 py-1.5 rounded-full backdrop-blur-md"
-          >
-            <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-            <span className="text-[10px] uppercase tracking-[0.2em] font-semibold text-accent font-sans">
-              Precision Agricultural processing • Gujarat
-            </span>
-          </motion.div>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.8 }}
-            className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight leading-[1.1] font-display text-white"
-          >
-            Custom Brand <br className="hidden sm:inline" />
-            <span className="text-accent text-gradient">Agriculture Processing</span>
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.8 }}
-            className="max-w-xl mx-auto text-sm sm:text-base text-gray-300 font-light leading-relaxed"
-          >
-            A bespoke post-harvest sorting, grading, and packaging facility serving grain and groundnut exporters. Built on absolute quality control.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6, duration: 0.8 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4"
-          >
-            <Link
-              to="/contact"
-              className="w-full sm:w-auto px-8 py-4 bg-accent hover:bg-accent-hover text-primary font-bold tracking-wide rounded-lg shadow-lg hover:scale-102 transition-all duration-300 font-display flex items-center justify-center space-x-2"
+        {/* Content & Stats Container */}
+        <div className="relative z-20 max-w-5xl mx-auto text-center flex flex-col items-center justify-center space-y-16 mt-10">
+          {/* Hero content */}
+          <div className="space-y-8">
+            <motion.div
+              initial={{ opacity: 0, y: -15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="inline-flex items-center space-x-2 bg-white/5 border border-white/10 px-4 py-1.5 rounded-full backdrop-blur-md"
             >
-              <span>Get Operations Quote</span>
-              <ArrowRight size={16} />
-            </Link>
-            <Link
-              to="/about"
-              className="w-full sm:w-auto px-8 py-4 border border-white/10 hover:border-accent hover:bg-white/5 text-white hover:text-accent font-semibold tracking-wide rounded-lg transition-all duration-300 font-display"
+              <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+              <span className="text-[10px] uppercase tracking-[0.2em] font-semibold text-accent font-sans">
+                Precision Agricultural processing • Gujarat
+              </span>
+            </motion.div>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.8 }}
+              className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight leading-[1.1] font-display text-white"
             >
-              Learn More
-            </Link>
-          </motion.div>
+              Custom Brand <br className="hidden sm:inline" />
+              <span className="text-accent text-gradient">Agriculture Processing</span>
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.8 }}
+              className="max-w-xl mx-auto text-sm sm:text-base text-gray-300 font-light leading-relaxed"
+            >
+              A bespoke post-harvest sorting, grading, and packaging facility serving grain and groundnut exporters. Built on absolute quality control.
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6, duration: 0.8 }}
+              className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4"
+            >
+              <Link
+                to="/contact"
+                className="w-full sm:w-auto px-8 py-4 bg-accent hover:bg-accent-hover text-primary font-bold tracking-wide rounded-lg shadow-lg hover:scale-102 transition-all duration-300 font-display flex items-center justify-center space-x-2"
+              >
+                <span>Get Operations Quote</span>
+                <ArrowRight size={16} />
+              </Link>
+              <Link
+                to="/about"
+                className="w-full sm:w-auto px-8 py-4 border border-white/10 hover:border-accent hover:bg-white/5 text-white hover:text-accent font-semibold tracking-wide rounded-lg transition-all duration-300 font-display"
+              >
+                Learn More
+              </Link>
+            </motion.div>
+          </div>
+
+          {/* Floating statistics cards */}
+          <div className="w-full flex flex-wrap items-center justify-center gap-6 md:justify-around max-w-7xl mx-auto pt-6 pb-6 bg-[#181B22]/40 backdrop-blur-md rounded-2xl border border-white/5 shadow-premium px-6">
+            <div className="text-center">
+              <span className="font-display font-extrabold text-3xl sm:text-4xl text-accent block">15+</span>
+              <span className="text-[10px] text-[#D9D9D9] uppercase tracking-widest font-semibold font-sans mt-1 block">Years Experience</span>
+            </div>
+            <div className="h-8 w-[1px] bg-white/5 hidden md:block" />
+            <div className="text-center">
+              <span className="font-display font-extrabold text-3xl sm:text-4xl text-white block">99.9%</span>
+              <span className="text-[10px] text-[#D9D9D9] uppercase tracking-widest font-semibold font-sans mt-1 block">Optical Purity</span>
+            </div>
+            <div className="h-8 w-[1px] bg-white/5 hidden md:block" />
+            <div className="text-center">
+              <span className="font-display font-extrabold text-3xl sm:text-4xl text-accent block">200+</span>
+              <span className="text-[10px] text-[#D9D9D9] uppercase tracking-widest font-semibold font-sans mt-1 block">Happy Clients</span>
+            </div>
+            <div className="h-8 w-[1px] bg-white/5 hidden md:block" />
+            <div className="text-center">
+              <span className="font-display font-extrabold text-3xl sm:text-4xl text-white block">10,000+</span>
+              <span className="text-[10px] text-[#D9D9D9] uppercase tracking-widest font-semibold font-sans mt-1 block">Tons Processed</span>
+            </div>
+          </div>
         </div>
       </section>
 

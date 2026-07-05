@@ -7,7 +7,54 @@ export default function Gallery() {
   const [filter, setFilter] = useState('all');
   const [lightboxIndex, setLightboxIndex] = useState(null);
 
-  const galleryItems = [];
+  const galleryItems = [
+    {
+      title: 'Optical Sensor Sorter',
+      category: 'machinery',
+      image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=800&auto=format&fit=crop'
+    },
+    {
+      title: 'Sondarda Processing Plant',
+      category: 'factory',
+      image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=800&auto=format&fit=crop'
+    },
+
+    {
+      title: 'Pneumatic Bag Stacking',
+      category: 'packing',
+      image: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=800&auto=format&fit=crop'
+    },
+    {
+      title: 'Facility Racking Storage',
+      category: 'warehouse',
+      image: 'https://images.unsplash.com/photo-1587293852726-70cdb56c2866?q=80&w=800&auto=format&fit=crop'
+    },
+    {
+      title: 'CCD Camera Alignment Desk',
+      category: 'machinery',
+      image: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?q=80&w=800&auto=format&fit=crop'
+    },
+    {
+      title: 'Sorted Chickpeas (Chana)',
+      category: 'products',
+      image: 'https://images.unsplash.com/photo-1626132647523-66f5bf380027?q=80&w=800&auto=format&fit=crop'
+    },
+    {
+      title: 'Cargo Forklift Loading',
+      category: 'warehouse',
+      image: 'https://images.unsplash.com/photo-1553413719-875871274712?q=80&w=800&auto=format&fit=crop'
+    },
+    {
+      title: 'Whole Pigeon Peas (Tuwar)',
+      category: 'products',
+      image: 'https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?q=80&w=800&auto=format&fit=crop'
+    },
+    {
+      title: 'Finished Jute Bag Shipments',
+      category: 'packing',
+      image: 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?q=80&w=800&auto=format&fit=crop'
+    }
+  ];
 
   const categories = [
     { id: 'all', label: 'All Photos' },
