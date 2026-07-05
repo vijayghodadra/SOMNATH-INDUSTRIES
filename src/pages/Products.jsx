@@ -5,6 +5,7 @@ import SEO from '../components/SEO';
 import peanutImg from '../assets/Peanut.jpg';
 import chanaImg from '../assets/Chana.jpg';
 import tuwarImg from '../assets/Tuwar.jpg';
+import wheatImg from '../assets/Wheat.png';
 
 export default function Products() {
   const products = [
@@ -69,6 +70,27 @@ export default function Products() {
         { name: 'Damaged / Discolored', value: '1.0% Maximum' },
         { name: 'Purity Level', value: '99.0% Minimum' },
         { name: 'Cleaning Pass', value: 'Dual-pass Aspirator & Destoner' }
+      ]
+    },
+    {
+      id: 'wheat',
+      name: 'Wheat',
+      variety: 'Lokwan, Tukda & Sharbati Varieties',
+      image: wheatImg,
+      description: 'Processed under high-precision cleaning configurations, our wheat grains are separated from chaff, dust, broken seeds, and foreign stones. Dual-pass camera sorters ensure consistent kernel quality for milling and direct export.',
+      applications: [
+        'Flour Milling Units: Calibrated whole grains yielding high flour extraction.',
+        'Direct Snacking & Roasting: Premium grains sorted for puffed wheat and snacks.',
+        'Export Cargoes: Bulk consignments graded to meet international admixture limits.',
+        'Premium Retail Packs: Polished, dust-free whole grains for direct packaging.'
+      ],
+      specifications: [
+        { name: 'Moisture', value: '11.0% Maximum' },
+        { name: 'Foreign Matter', value: '0.25% Maximum' },
+        { name: 'Weeviled Grains', value: '0.5% Maximum' },
+        { name: 'Purity Level', value: '99.5% Minimum' },
+        { name: 'Gluten Content', value: '9.0% - 11.5% Range' },
+        { name: 'Cleaning Pass', value: 'Vibratory Grader & Destoner' }
       ]
     }
   ];

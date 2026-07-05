@@ -5,6 +5,7 @@ import { Menu, X, Cog, PhoneCall, ChevronDown, ArrowRight } from 'lucide-react';
 import peanutImg from '../assets/Peanut.jpg';
 import chanaImg from '../assets/Chana.jpg';
 import tuwarImg from '../assets/Tuwar.jpg';
+import wheatImg from '../assets/Wheat.png';
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -64,6 +65,13 @@ export default function Navbar() {
       variety: 'Red & White Whole Seeds',
       desc: 'Destoned and aspirated whole peas prepared for premium dehulling mills.',
       image: tuwarImg,
+    },
+    {
+      id: 'wheat',
+      name: 'Wheat',
+      variety: 'Lokwan & Tukda Varieties',
+      desc: 'Premium cleaned whole wheat grains sorted for mills and exporters.',
+      image: wheatImg,
     }
   ];
 
@@ -127,7 +135,7 @@ export default function Navbar() {
                             transition={{ duration: 0.25, ease: 'easeOut' }}
                             className="absolute left-1/2 -translate-x-1/2 top-full mt-4 w-[680px] bg-[#181B22]/98 backdrop-blur-md rounded-xl shadow-premium-lg border border-white/10 p-6 z-50 grid grid-cols-12 gap-6"
                           >
-                            <div className="col-span-8 grid grid-cols-3 gap-4">
+                            <div className="col-span-8 grid grid-cols-2 gap-4">
                               {megaProducts.map((prod) => (
                                 <Link
                                   key={prod.id}

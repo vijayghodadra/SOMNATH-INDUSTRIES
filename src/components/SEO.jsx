@@ -24,7 +24,7 @@ export default function SEO({ title, description, keywords, schema }) {
     if (metaKeywords) {
       metaKeywords.setAttribute(
         'content',
-        keywords || 'Somnath Industries, Peanut Sorting, Chana Sorting, Tuwar Grading, Agricultural Packing, Gujarat Agriculture Processing, Sorting Machinery'
+        keywords || 'Somnath Industries, Peanut Sorting, Chana Sorting, Tuwar Grading, Wheat Sorting, Agricultural Packing, Gujarat Agriculture Processing, Sorting Machinery'
       );
     }
 

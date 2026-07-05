@@ -91,6 +91,9 @@ export default function Footer() {
                 { label: 'Industrial Packaging', path: '/services#packing' },
                 { label: 'Peanut (Singdana) Processing', path: '/products#peanut' },
                 { label: 'Chickpeas (Chana) Processing', path: '/products#chana' },
+                { label: 'Tuwar (Pigeon Peas) Processing', path: '/products#tuwar' },
+                { label: 'Wheat Processing', path: '/products#wheat' },
+                { label: 'Other Agricultural Commodities / Etc.', path: '/contact' },
               ].map((link) => (
                 <li key={link.label}>
                   <Link

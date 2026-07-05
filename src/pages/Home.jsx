@@ -12,6 +12,7 @@ import cardsImg from '../assets/Cards.jpeg';
 import peanutImg from '../assets/Peanut.jpg';
 import chanaImg from '../assets/Chana.jpg';
 import tuwarImg from '../assets/Tuwar.jpg';
+import wheatImg from '../assets/Wheat.png';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -51,6 +52,13 @@ export default function Home() {
       variety: 'Red & White Varieties',
       tagline: 'Clean whole grains prepared directly for pulse splitting mills.',
       image: tuwarImg
+    },
+    {
+      id: 'wheat',
+      name: 'Wheat',
+      variety: 'Lokwan & Tukda Varieties',
+      tagline: 'Premium cleaned whole grains sorted for mills and exporters.',
+      image: wheatImg
     }
   ];
 
@@ -170,11 +178,11 @@ export default function Home() {
               initial={{ opacity: 0, y: -15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="inline-flex items-center space-x-2 bg-white/5 border border-white/10 px-4 py-1.5 rounded-full backdrop-blur-md"
+              className="inline-flex bg-white/5 border border-white/10 px-4 py-2 rounded-full backdrop-blur-md"
             >
-              <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-              <span className="text-[10px] uppercase tracking-[0.2em] font-semibold text-accent font-sans">
-                Precision Agricultural processing • Gujarat
+              <span className="text-[10px] uppercase tracking-[0.2em] font-semibold text-accent font-sans leading-relaxed">
+                <span className="inline-block w-2 h-2 rounded-full bg-accent animate-pulse mr-2 align-middle shrink-0" />
+                Precision Agricultural processing <span className="inline-block w-2 h-2 rounded-full bg-accent mx-2 align-middle shrink-0" /> Gujarat
               </span>
             </motion.div>
 
@@ -255,8 +263,8 @@ export default function Home() {
                 <span className="text-accent font-bold tracking-widest text-xs uppercase block font-sans">
                   The Somnath Heritage
                 </span>
-                <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight font-display leading-tight">
-                  Over a Decade of Pure Sorting Infrastructure
+                <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-normal font-display leading-tight">
+                  Over a Decade of &nbsp;Pure Sorting Infrastructure
                 </h2>
                 <div className="h-[2px] w-20 bg-accent rounded" />
               </div>
@@ -332,7 +340,7 @@ export default function Home() {
           </div>
 
           {/* 3D tilt style product list */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 perspective-1000">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 perspective-1000">
             {products.map((prod) => (
               <div 
                 key={prod.id}

@@ -34,6 +34,7 @@ export default function Contact() {
         if (prod.includes('peanut')) selectedKey = 'peanut';
         else if (prod.includes('chana')) selectedKey = 'chana';
         else if (prod.includes('tuwar')) selectedKey = 'tuwar';
+        else if (prod.includes('wheat')) selectedKey = 'wheat';
 
         setFormData(prev => ({
           ...prev,
@@ -343,6 +344,7 @@ export default function Contact() {
                     <option value="peanut">Peanut (Singdana)</option>
                     <option value="chana">Chana (Chickpeas)</option>
                     <option value="tuwar">Tuwar (Pigeon Peas)</option>
+                    <option value="wheat">Wheat</option>
                     <option value="other">Other Agricultural Commodities / Etc.</option>
                   </select>
                 </div>

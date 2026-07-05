@@ -19,7 +19,7 @@ export default function DigitalCard() {
     whatsappUrl: 'https://wa.me/919925842943?text=Hi%20Sagar,%20I%20visited%20your%20digital%20business%20card%20and%20wanted%20to%20connect.'
   };
 
-  const products = ['Peanut (Singdana)', 'Chana (Chickpeas)', 'Tuwar (Pigeon Peas)'];
+  const products = ['Peanut (Singdana)', 'Chana (Chickpeas)', 'Tuwar (Pigeon Peas)', 'Wheat'];
   const services = ['Optical Color Sorting', 'Size & Weight Grading', 'Industrial Packaging'];
 
   const downloadVcf = () => {
