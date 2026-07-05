@@ -343,6 +343,7 @@ export default function Contact() {
                     <option value="peanut">Peanut (Singdana)</option>
                     <option value="chana">Chana (Chickpeas)</option>
                     <option value="tuwar">Tuwar (Pigeon Peas)</option>
+                    <option value="other">Other Agricultural Commodities / Etc.</option>
                   </select>
                 </div>
 
