@@ -203,7 +203,7 @@ export default function Services() {
                         service.id === 'grading' 
                           ? 'object-contain bg-white/[0.02] p-4' 
                           : service.id === 'sorting'
-                            ? 'object-contain'
+                            ? 'object-contain sm:object-cover'
                             : 'object-cover'
                       }`}
                       loading="lazy"
