@@ -292,11 +292,11 @@ export default function Navbar() {
                   Request Quote
                 </Link>
                 <a
-                  href="tel:+919876543210"
+                  href="tel:+919925842943"
                   className="flex items-center justify-center space-x-2 text-xs text-gray-400 hover:text-white font-medium transition-colors py-2"
                 >
                   <PhoneCall size={14} className="text-accent" />
-                  <span>Call Operations: +91 98765 43210</span>
+                  <span>Call Operations: +91 99258 42943</span>
                 </a>
               </div>
             </motion.div>

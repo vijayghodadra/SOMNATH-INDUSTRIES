@@ -33,7 +33,7 @@ export default function Footer() {
             {/* Social Icons */}
             <div className="flex space-x-4">
               <a
-                href="https://wa.me/919876543210"
+                href="https://wa.me/919925842943"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-lg bg-[#181B22] flex items-center justify-center text-gray-400 hover:bg-accent hover:text-primary transition-all duration-300 shadow-sm border border-white/5"
@@ -42,7 +42,7 @@ export default function Footer() {
                 <MessageSquare size={18} />
               </a>
               <a
-                href="mailto:info@somnathindustries.com"
+                href="mailto:sagar.gondaliya@somnathindustries.info"
                 className="w-10 h-10 rounded-lg bg-[#181B22] flex items-center justify-center text-gray-400 hover:bg-accent hover:text-primary transition-all duration-300 shadow-sm border border-white/5"
                 aria-label="Email"
               >
@@ -121,14 +121,14 @@ export default function Footer() {
               </li>
               <li className="flex items-center space-x-3 text-xs text-gray-400">
                 <Phone className="text-accent shrink-0" size={16} />
-                <a href="tel:+919876543210" className="hover:text-accent transition-colors">
-                  +91 98765 43210
+                <a href="tel:+919925842943" className="hover:text-accent transition-colors">
+                  +91 99258 42943
                 </a>
               </li>
               <li className="flex items-center space-x-3 text-xs text-gray-400">
                 <Mail className="text-accent shrink-0" size={16} />
-                <a href="mailto:info@somnathindustries.com" className="hover:text-accent transition-colors">
-                  info@somnathindustries.com
+                <a href="mailto:sagar.gondaliya@somnathindustries.info" className="hover:text-accent transition-colors">
+                  sagar.gondaliya@somnathindustries.info
                 </a>
               </li>
               <li className="flex items-center space-x-3 text-xs text-gray-400">

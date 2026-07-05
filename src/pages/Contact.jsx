@@ -162,14 +162,14 @@ export default function Contact() {
               {/* Action Buttons */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <a
-                  href="tel:+919876543210"
+                  href="tel:+919925842943"
                   className="px-4 py-3.5 bg-[#181B22] border border-white/5 hover:border-accent text-white hover:text-accent font-bold text-xs tracking-wider rounded-lg shadow-premium transition-all duration-300 flex items-center justify-center space-x-2 font-display uppercase cursor-pointer"
                 >
                   <Phone size={14} className="fill-current" />
                   <span>Call Now</span>
                 </a>
                 <a
-                  href="https://wa.me/919876543210?text=Hello%20Somnath%20Industries,%20I%20would%20like%20to%20get%20pricing%20details."
+                  href="https://wa.me/919925842943?text=Hello%20Somnath%20Industries,%20I%20would%20like%20to%20get%20pricing%20details."
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-4 py-3.5 bg-[#25D366] hover:bg-[#128C7E] text-white font-bold text-xs tracking-wider rounded-lg shadow transition-all duration-300 flex items-center justify-center space-x-2 font-display uppercase cursor-pointer"
@@ -178,7 +178,7 @@ export default function Contact() {
                   <span>WhatsApp</span>
                 </a>
                 <a
-                  href="mailto:info@somnathindustries.com"
+                  href="mailto:sagar.gondaliya@somnathindustries.info"
                   className="px-4 py-3.5 bg-[#181B22]/50 border border-white/5 hover:bg-[#181B22] text-white hover:text-accent font-bold text-xs tracking-wider rounded-lg shadow transition-all duration-300 flex items-center justify-center space-x-2 font-display uppercase cursor-pointer"
                 >
                   <Mail size={14} />
@@ -270,7 +270,7 @@ export default function Contact() {
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
-                      placeholder="e.g. +91 98765 43210"
+                      placeholder="e.g. +91 99258 42943"
                       className={`w-full px-4 py-3 rounded-lg border bg-[#0F1115] text-sm text-white outline-none transition-colors ${
                         errors.phone ? 'border-red-500 focus:border-red-500' : 'border-white/5 focus:border-accent'
                       }`}

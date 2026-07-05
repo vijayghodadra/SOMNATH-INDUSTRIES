@@ -28,7 +28,7 @@ export default function FloatingActions() {
     <div className="fixed bottom-6 right-6 z-40 flex flex-col items-center space-y-3.5">
       {/* Call Button */}
       <motion.a
-        href="tel:+919876543210"
+        href="tel:+919925842943"
         initial={{ scale: 0, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ delay: 0.1, type: 'spring', stiffness: 260, damping: 20 }}
@@ -43,7 +43,7 @@ export default function FloatingActions() {
 
       {/* WhatsApp Button */}
       <motion.a
-        href="https://wa.me/919876543210?text=Hello%20Somnath%20Industries,%20I%20would%20like%20to%20get%20more%20information%20about%20your%20services."
+        href="https://wa.me/919925842943?text=Hello%20Somnath%20Industries,%20I%20would%20like%20to%20get%20more%20information%20about%20your%20services."
         target="_blank"
         rel="noopener noreferrer"
         initial={{ scale: 0, opacity: 0 }}

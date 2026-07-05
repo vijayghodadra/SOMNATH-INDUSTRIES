@@ -206,7 +206,7 @@ export default function Home() {
             className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight leading-[1.1] font-display text-white"
           >
             Custom Brand <br className="hidden sm:inline" />
-            <span className="text-accent text-gradient">Industrial Processing</span>
+            <span className="text-accent text-gradient">Agriculture Processing</span>
           </motion.h1>
 
           <motion.p

@@ -12,7 +12,7 @@ export default function DigitalCard() {
     title: 'Proprietor',
     company: 'Somnath Industries',
     phone: '+91 99258 42943',
-    email: 'sagar.gondaliya@yahoo.com',
+    email: 'sagar.gondaliya@somnathindustries.info',
     address: 'Plot No.1, Ramdev Udhyog Nagar 2, Veraval Road, Sondarda, Gujarat - 362227',
     website: 'https://somnathindustries.in',
     mapsUrl: 'https://maps.google.com/?q=Somnath+Industries+Sondarda+Gujarat',
@@ -31,7 +31,7 @@ export default function DigitalCard() {
       'ORG:Somnath Industries',
       'TITLE:Proprietor',
       'TEL;TYPE=CELL,VOICE;VALUE=uri:tel:+919925842943',
-      'EMAIL;TYPE=PREF,INTERNET:sagar.gondaliya@yahoo.com',
+      'EMAIL;TYPE=PREF,INTERNET:sagar.gondaliya@somnathindustries.info',
       'ADR;TYPE=WORK,POSTAL,PARCEL:;;Plot No.1, Ramdev Udhyog Nagar 2, Veraval Road;Sondarda;Gujarat;362227;India',
       'URL:https://somnathindustries.in',
       'END:VCARD'
