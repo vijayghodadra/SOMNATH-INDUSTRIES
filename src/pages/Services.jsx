@@ -202,7 +202,9 @@ export default function Services() {
                       className={`w-full h-full hover:scale-102 transition-transform duration-300 ${
                         service.id === 'grading' 
                           ? 'object-contain bg-white/[0.02] p-4' 
-                          : 'object-cover'
+                          : service.id === 'sorting'
+                            ? 'object-contain'
+                            : 'object-cover'
                       }`}
                       loading="lazy"
                     />
