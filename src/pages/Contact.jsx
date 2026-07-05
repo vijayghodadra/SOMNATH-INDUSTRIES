@@ -6,6 +6,7 @@ import {
   CheckCircle, AlertCircle, QrCode 
 } from 'lucide-react';
 import SEO from '../components/SEO';
+import qrImage from '../assets/qr.png';
 
 export default function Contact() {
   const location = useLocation();
@@ -217,7 +218,7 @@ export default function Contact() {
               {/* QR Code Placeholder Card */}
               <div className="p-8 border border-white/5 bg-[#181B22]/50 rounded-2xl flex flex-col sm:flex-row items-center gap-6 shadow-premium">
                 <div className="p-3 bg-[#181B22] border border-white/10 rounded-xl flex items-center justify-center relative group cursor-pointer shrink-0">
-                  <QrCode size={100} className="text-accent stroke-[1.25]" />
+                  <img src={qrImage} alt="Somnath Industries Business Card QR Code" className="w-24 h-24 object-contain rounded-lg bg-white p-1" />
                   <div className="absolute inset-0 bg-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl" />
                 </div>
                 <div className="text-center sm:text-left space-y-2">
