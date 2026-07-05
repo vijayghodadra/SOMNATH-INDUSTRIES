@@ -195,12 +195,12 @@ export default function Services() {
                   className="lg:col-span-5 space-y-8"
                 >
                   {/* Photo representation */}
-                  <div className="h-72 rounded-xl overflow-hidden shadow-premium border border-white/10 bg-[#181B22]/20 flex items-center justify-center">
+                  <div className="h-64 sm:h-72 rounded-xl overflow-hidden shadow-premium border border-white/10 bg-[#181B22]/20 flex items-center justify-center">
                     <img 
                       src={service.image} 
                       alt={service.title} 
                       className={`w-full h-full hover:scale-102 transition-transform duration-300 ${
-                        service.id === 'sorting' || service.id === 'grading' 
+                        service.id === 'grading' 
                           ? 'object-contain bg-white/[0.02] p-4' 
                           : 'object-cover'
                       }`}
