@@ -309,7 +309,7 @@ export default function Home() {
       {/* 4. PRODUCTS - Horizontal spotlight and 3D hover effects */}
       <section className="py-24 bg-[#181B22]/30 border-t border-white/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row items-end justify-between mb-16 gap-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-16 gap-6">
             <div className="space-y-4">
               <span className="text-accent font-bold tracking-widest text-xs uppercase block font-sans">
                 Our Showcase
