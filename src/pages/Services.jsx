@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import SEO from '../components/SEO';
 import sizeImg from '../assets/size.png';
-import machineImg from '../assets/Machine.png';
+import machineImg from '../assets/Machinemayor.jpeg';
 
 export default function Services() {
   const { hash } = useLocation();
