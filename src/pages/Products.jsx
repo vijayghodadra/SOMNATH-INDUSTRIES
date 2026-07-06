@@ -2,10 +2,7 @@ import { motion } from 'framer-motion';
 import { CheckCircle2, FileSpreadsheet, Layers, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
-import peanutImg from '../assets/Peanut.jpg';
-import chanaImg from '../assets/Chana.jpg';
-import tuwarImg from '../assets/Tuwar.jpg';
-import wheatImg from '../assets/Wheat.png';
+import { getImageUrl } from '../utils/imageHelper';
 
 export default function Products() {
   const products = [
@@ -13,7 +10,7 @@ export default function Products() {
       id: 'peanut',
       name: 'Peanut (Singdana)',
       variety: 'Bold, Java & TJ Varieties',
-      image: peanutImg,
+      image: getImageUrl('peanut'),
       description: 'Sourced from the premium groundnut belt of Saurashtra, our peanuts undergo rigid aspirator cleaning, multi-deck size grading, and dual-camera optical sorting to separate discolored, moldy, or shriveled kernels.',
       applications: [
         'Peanut Butter Manufacturing: Grade-controlled splits and counts.',
@@ -34,7 +31,7 @@ export default function Products() {
       id: 'chana',
       name: 'Chana (Chickpeas)',
       variety: 'Bengal Gram / Desi & Kabuli varieties',
-      image: chanaImg,
+      image: getImageUrl('chana'),
       description: 'Our Chana processing isolates whole, healthy grains from broken pieces and dust clods. Size graders ensure uniform diameter sorting, which is critical for packaging consistency and predictable cooking times.',
       applications: [
         'Besan (Gram Flour) Mills: Cleaned whole grains for premium grade flour.',
@@ -55,7 +52,7 @@ export default function Products() {
       id: 'tuwar',
       name: 'Tuwar (Pigeon Peas)',
       variety: 'Whole Pigeon Peas / Red & White varieties',
-      image: tuwarImg,
+      image: getImageUrl('tuwar'),
       description: 'Processed under strict sanitization settings, our whole Tuwar grains undergo vibratory separation to eliminate clay balls, empty seed shells, and weed seeds. This ensures a clean feed for Dal processing mills.',
       applications: [
         'Dal Milling Operations: De-stoned whole peas ready for dehulling.',
@@ -76,7 +73,7 @@ export default function Products() {
       id: 'wheat',
       name: 'Wheat',
       variety: 'Lokwan, Tukda & Sharbati Varieties',
-      image: wheatImg,
+      image: getImageUrl('wheat'),
       description: 'Processed under high-precision cleaning configurations, our wheat grains are separated from chaff, dust, broken seeds, and foreign stones. Dual-pass camera sorters ensure consistent kernel quality for milling and direct export.',
       applications: [
         'Flour Milling Units: Calibrated whole grains yielding high flour extraction.',

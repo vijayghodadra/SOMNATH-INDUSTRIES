@@ -95,10 +95,31 @@ export default function Contact() {
 
     setIsSubmitting(true);
 
-    // Mock API call
+    // Mock API call and LocalStorage write
     setTimeout(() => {
       setIsSubmitting(false);
       setSubmitSuccess(true);
+
+      // Save inquiry to localStorage for admin panel
+      try {
+        const stored = localStorage.getItem('somnath_inquiries');
+        const existing = stored ? JSON.parse(stored) : [];
+        const newInq = {
+          id: `inq-${Date.now()}`,
+          name: formData.name,
+          phone: formData.phone,
+          email: formData.email,
+          business: formData.business,
+          product: formData.product,
+          message: formData.message,
+          date: new Date().toISOString(),
+          status: 'unread'
+        };
+        localStorage.setItem('somnath_inquiries', JSON.stringify([newInq, ...existing]));
+      } catch (err) {
+        console.error('Error writing inquiry to localStorage:', err);
+      }
+
       // Reset form
       setFormData({
         name: '',

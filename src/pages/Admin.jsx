@@ -1,0 +1,911 @@
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  Lock, Eye, EyeOff, LayoutDashboard, MessageSquare, 
+  Image as ImageIcon, RefreshCw, Trash2, Plus, 
+  CheckCircle, FileText, XCircle, LogOut, CheckSquare, Square
+} from 'lucide-react';
+import { getImageUrl, setImageUrl, resetImages } from '../utils/imageHelper';
+import SEO from '../components/SEO';
+
+const DEFAULT_PASSCODE = 'SomnathAdmin@2026';
+
+export default function Admin() {
+  // Authentication states
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [passcode, setPasscode] = useState('');
+  const [showPasscode, setShowPasscode] = useState(false);
+  const [loginError, setLoginError] = useState('');
+
+  // Dashboard states
+  const [activeTab, setActiveTab] = useState('inquiries');
+  const [inquiries, setInquiries] = useState([]);
+  const [updates, setUpdates] = useState([]);
+  const [quotes, setQuotes] = useState([]);
+  const [galleryItems, setGalleryItems] = useState([]);
+
+  // Image Manager values
+  const [imageUrls, setImageUrls] = useState({
+    home_hero_bg: '',
+    peanut: '',
+    chana: '',
+    tuwar: '',
+    wheat: '',
+    cards_img: '',
+    machine_mayor: ''
+  });
+
+  // Form states for updates, quotes and gallery
+  const [newUpdate, setNewUpdate] = useState({ title: '', category: 'Plant Operations', content: '' });
+  const [newQuote, setNewQuote] = useState({ text: '', author: '' });
+  const [newPhoto, setNewPhoto] = useState({ title: '', category: 'factory', image: '' });
+  const [fileInputKey, setFileInputKey] = useState(0);
+
+  // Notifications / feedback
+  const [actionSuccess, setActionSuccess] = useState('');
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    
+    // Check session login state
+    const loggedInSession = sessionStorage.getItem('somnath_admin_logged_in');
+    if (loggedInSession === 'true') {
+      setIsLoggedIn(true);
+      loadDashboardData();
+    }
+  }, []);
+
+  const loadDashboardData = () => {
+    // Inquiries
+    const storedInquiries = localStorage.getItem('somnath_inquiries');
+    setInquiries(storedInquiries ? JSON.parse(storedInquiries) : []);
+
+    // Updates
+    const storedUpdates = localStorage.getItem('somnath_updates');
+    if (storedUpdates) {
+      setUpdates(JSON.parse(storedUpdates));
+    }
+
+    // Quotes
+    const storedQuotes = localStorage.getItem('somnath_quotes');
+    if (storedQuotes) {
+      setQuotes(JSON.parse(storedQuotes));
+    }
+
+    // Gallery
+    const storedGallery = localStorage.getItem('somnath_gallery_items');
+    if (storedGallery) {
+      setGalleryItems(JSON.parse(storedGallery));
+    }
+
+    // Load active image manager values
+    setImageUrls({
+      home_hero_bg: localStorage.getItem('somnath_img_home_hero_bg') || '',
+      peanut: localStorage.getItem('somnath_img_peanut') || '',
+      chana: localStorage.getItem('somnath_img_chana') || '',
+      tuwar: localStorage.getItem('somnath_img_tuwar') || '',
+      wheat: localStorage.getItem('somnath_img_wheat') || '',
+      cards_img: localStorage.getItem('somnath_img_cards_img') || '',
+      machine_mayor: localStorage.getItem('somnath_img_machine_mayor') || ''
+    });
+  };
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if (passcode === DEFAULT_PASSCODE) {
+      sessionStorage.setItem('somnath_admin_logged_in', 'true');
+      setIsLoggedIn(true);
+      setLoginError('');
+      loadDashboardData();
+      triggerSuccess('Access Granted. Welcome to Somnath Dashboard.');
+    } else {
+      setLoginError('Invalid Administrator Passcode.');
+    }
+  };
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('somnath_admin_logged_in');
+    setIsLoggedIn(false);
+    setPasscode('');
+  };
+
+  const triggerSuccess = (msg) => {
+    setActionSuccess(msg);
+    setTimeout(() => setActionSuccess(''), 3000);
+  };
+
+  // --- Tab 1: Inquiries actions ---
+  const toggleInquiryStatus = (id) => {
+    const updated = inquiries.map(inq => {
+      if (inq.id === id) {
+        return { ...inq, status: inq.status === 'read' ? 'unread' : 'read' };
+      }
+      return inq;
+    });
+    setInquiries(updated);
+    localStorage.setItem('somnath_inquiries', JSON.stringify(updated));
+    triggerSuccess('Inquiry status updated.');
+  };
+
+  const deleteInquiry = (id) => {
+    if (!window.confirm('Delete this inquiry message permanently?')) return;
+    const filtered = inquiries.filter(inq => inq.id !== id);
+    setInquiries(filtered);
+    localStorage.setItem('somnath_inquiries', JSON.stringify(filtered));
+    triggerSuccess('Inquiry deleted.');
+  };
+
+  // --- Tab 2: Image overrides actions ---
+  const handleImageManagerFileChange = (key, e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+
+        const MAX_SIZE = 1200;
+        if (width > height) {
+          if (width > MAX_SIZE) {
+            height *= MAX_SIZE / width;
+            width = MAX_SIZE;
+          }
+        } else {
+          if (height > MAX_SIZE) {
+            width *= MAX_SIZE / height;
+            height = MAX_SIZE;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+
+        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
+        setImageUrls(prev => ({ ...prev, [key]: compressedBase64 }));
+        setImageUrl(key, compressedBase64);
+        triggerSuccess(`Updated website image successfully.`);
+      };
+      img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const resetSingleImage = (key) => {
+    setImageUrl(key, '');
+    setImageUrls(prev => ({ ...prev, [key]: '' }));
+    triggerSuccess(`Reset ${key} to default asset.`);
+  };
+
+  const handleResetAllImages = () => {
+    if (!window.confirm('Reset ALL customized images back to local defaults?')) return;
+    resetImages();
+    setImageUrls({
+      home_hero_bg: '',
+      peanut: '',
+      chana: '',
+      tuwar: '',
+      wheat: '',
+      cards_img: '',
+      machine_mayor: ''
+    });
+    triggerSuccess('All images reset to factory defaults.');
+  };
+
+  // --- Tab 3: Updates CRUD ---
+  const handleAddUpdate = (e) => {
+    e.preventDefault();
+    if (!newUpdate.title.trim() || !newUpdate.content.trim()) return;
+
+    const added = {
+      id: `u-${Date.now()}`,
+      title: newUpdate.title,
+      category: newUpdate.category,
+      content: newUpdate.content,
+      date: new Date().toISOString()
+    };
+
+    const updatedList = [added, ...updates];
+    setUpdates(updatedList);
+    localStorage.setItem('somnath_updates', JSON.stringify(updatedList));
+    setNewUpdate({ title: '', category: 'Plant Operations', content: '' });
+    triggerSuccess('Daily Update posted successfully.');
+  };
+
+  const handleDeleteUpdate = (id) => {
+    if (!window.confirm('Delete this update post?')) return;
+    const filtered = updates.filter(up => up.id !== id);
+    setUpdates(filtered);
+    localStorage.setItem('somnath_updates', JSON.stringify(filtered));
+    triggerSuccess('Update post removed.');
+  };
+
+  // --- Tab 3: Quotes CRUD ---
+  const handleAddQuote = (e) => {
+    e.preventDefault();
+    if (!newQuote.text.trim()) return;
+
+    const added = {
+      id: `q-${Date.now()}`,
+      text: newQuote.text,
+      author: newQuote.author.trim() || 'Anonymous'
+    };
+
+    const updatedList = [added, ...quotes];
+    setQuotes(updatedList);
+    localStorage.setItem('somnath_quotes', JSON.stringify(updatedList));
+    setNewQuote({ text: '', author: '' });
+    triggerSuccess('Motivational Quote added.');
+  };
+
+  const handleDeleteQuote = (id) => {
+    if (!window.confirm('Delete this motivational quote?')) return;
+    const filtered = quotes.filter(q => q.id !== id);
+    setQuotes(filtered);
+    localStorage.setItem('somnath_quotes', JSON.stringify(filtered));
+    triggerSuccess('Quote removed.');
+  };
+
+  // --- Tab 4: Gallery CRUD ---
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+
+        const MAX_SIZE = 1000;
+        if (width > height) {
+          if (width > MAX_SIZE) {
+            height *= MAX_SIZE / width;
+            width = MAX_SIZE;
+          }
+        } else {
+          if (height > MAX_SIZE) {
+            width *= MAX_SIZE / height;
+            height = MAX_SIZE;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+
+        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
+        setNewPhoto(prev => ({ ...prev, image: compressedBase64 }));
+      };
+      img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleAddPhoto = (e) => {
+    e.preventDefault();
+    if (!newPhoto.title.trim() || !newPhoto.image.trim()) return;
+
+    const added = {
+      title: newPhoto.title.trim(),
+      category: newPhoto.category,
+      image: newPhoto.image.trim()
+    };
+
+    const updatedList = [added, ...galleryItems];
+    setGalleryItems(updatedList);
+    localStorage.setItem('somnath_gallery_items', JSON.stringify(updatedList));
+    setNewPhoto({ title: '', category: 'factory', image: '' });
+    setFileInputKey(prev => prev + 1);
+    triggerSuccess('Photo added to media gallery.');
+  };
+
+  const handleDeletePhoto = (index) => {
+    if (!window.confirm('Remove this photo from the media gallery?')) return;
+    const filtered = galleryItems.filter((_, idx) => idx !== index);
+    setGalleryItems(filtered);
+    localStorage.setItem('somnath_gallery_items', JSON.stringify(filtered));
+    triggerSuccess('Photo removed from media gallery.');
+  };
+
+  const formatDate = (dateStr) => {
+    try {
+      return new Date(dateStr).toLocaleString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    } catch (e) {
+      return dateStr;
+    }
+  };
+
+  return (
+    <div className="relative bg-[#0F1115] text-white min-h-screen pt-36 pb-24">
+      <SEO 
+        title="Admin Control Dashboard" 
+        description="Secure administrator management panel. Review customer quote inquiries, update plant statistics and images, and publish daily announcement feeds."
+      />
+
+      {/* Notifications Toast */}
+      <AnimatePresence>
+        {actionSuccess && (
+          <motion.div
+            initial={{ opacity: 0, y: -20, x: '-50%' }}
+            animate={{ opacity: 1, y: 0, x: '-50%' }}
+            exit={{ opacity: 0, y: -20, x: '-50%' }}
+            className="fixed top-24 left-1/2 z-50 px-6 py-3.5 bg-accent text-primary font-bold text-xs tracking-wider rounded-lg shadow-premium flex items-center space-x-2 font-display uppercase border border-accent/25"
+          >
+            <CheckCircle size={15} />
+            <span>{actionSuccess}</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* LOGIN SCREEN */}
+        {!isLoggedIn ? (
+          <div className="max-w-md mx-auto py-12">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-[#181B22] border border-white/5 rounded-2xl p-8 sm:p-10 shadow-premium relative overflow-hidden"
+            >
+              <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full blur-3xl pointer-events-none" />
+              
+              <div className="text-center space-y-3 mb-8">
+                <div className="w-12 h-12 bg-accent/10 border border-accent/20 rounded-xl flex items-center justify-center text-accent mx-auto">
+                  <Lock size={20} className="stroke-[1.5]" />
+                </div>
+                <h2 className="font-display font-extrabold text-2xl text-white">Administrator Access</h2>
+                <p className="text-xs text-gray-400 font-light">Enter client-side passcode to authorize database read/write overrides.</p>
+              </div>
+
+              <form onSubmit={handleLogin} className="space-y-6">
+                <div className="space-y-2">
+                  <label className="block text-[10px] font-bold text-white uppercase tracking-widest font-sans">
+                    Admin Passcode
+                  </label>
+                  <div className="relative">
+                    <input
+                      type={showPasscode ? 'text' : 'password'}
+                      value={passcode}
+                      onChange={(e) => setPasscode(e.target.value)}
+                      placeholder="••••••••••••••"
+                      className="w-full pl-4 pr-10 py-3 bg-[#0F1115] border border-white/5 focus:border-accent text-sm text-white rounded-lg outline-none transition-colors font-mono"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPasscode(!showPasscode)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
+                    >
+                      {showPasscode ? <EyeOff size={16} /> : <Eye size={16} />}
+                    </button>
+                  </div>
+                  {loginError && (
+                    <span className="flex items-center text-xs text-red-500 font-medium mt-1">
+                      <XCircle size={12} className="mr-1.5" />
+                      {loginError}
+                    </span>
+                  )}
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full py-3.5 bg-accent hover:bg-accent-hover text-primary font-bold text-xs uppercase tracking-widest font-display rounded-lg shadow-premium hover:scale-102 transition-all duration-300 cursor-pointer"
+                >
+                  Authorize Console
+                </button>
+              </form>
+            </motion.div>
+          </div>
+        ) : (
+          
+          /* ADMIN DASHBOARD CONSOLE */
+          <div className="space-y-8">
+            
+            {/* Header Dashboard Info */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 border-b border-white/5 pb-8">
+              <div className="space-y-2">
+                <div className="flex items-center space-x-2.5">
+                  <LayoutDashboard className="text-accent" size={24} />
+                  <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-accent font-sans">Management Panel</span>
+                </div>
+                <h1 className="text-3xl font-extrabold text-white font-display tracking-tight leading-none">
+                  Somnath Admin Dashboard
+                </h1>
+              </div>
+
+              <button
+                onClick={handleLogout}
+                className="self-start sm:self-center px-4 py-2.5 bg-red-950/40 border border-red-500/20 hover:border-red-500 text-red-400 font-bold text-xs tracking-wider rounded-lg transition-colors flex items-center space-x-2 font-display uppercase cursor-pointer"
+              >
+                <LogOut size={13} />
+                <span>End Session</span>
+              </button>
+            </div>
+
+            {/* Main Section: Sidebar / Tabs and Panel Grid */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+              
+              {/* Tab Navigation Column (3 Cols) */}
+              <div className="lg:col-span-3 space-y-3">
+                {[
+                  { id: 'inquiries', label: 'Inquiry Messages', icon: MessageSquare, count: inquiries.filter(i => i.status === 'unread').length },
+                  { id: 'images', label: 'Image Override Manager', icon: LayoutDashboard },
+                  { id: 'gallery', label: 'Media Gallery Photos', icon: ImageIcon },
+                  { id: 'content', label: 'Daily Updates & Quotes', icon: FileText }
+                ].map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`w-full p-4 rounded-xl text-left text-xs font-bold uppercase tracking-wider transition-all duration-300 flex items-center justify-between border cursor-pointer ${
+                      activeTab === tab.id
+                        ? 'bg-accent text-primary border-accent shadow-premium'
+                        : 'bg-[#181B22] text-gray-400 border-white/5 hover:border-accent/40 hover:text-white'
+                    }`}
+                  >
+                    <div className="flex items-center space-x-3">
+                      <tab.icon size={16} />
+                      <span>{tab.label}</span>
+                    </div>
+                    {tab.count !== undefined && tab.count > 0 && (
+                      <span className={`px-2 py-0.5 rounded text-[10px] font-black font-sans ${activeTab === tab.id ? 'bg-primary text-accent' : 'bg-accent text-primary'}`}>
+                        {tab.count} New
+                      </span>
+                    )}
+                  </button>
+                ))}
+              </div>
+
+              {/* Panel Display Column (9 Cols) */}
+              <div className="lg:col-span-9 bg-[#181B22] border border-white/5 rounded-2xl p-6 sm:p-8 shadow-premium min-h-[500px]">
+                
+                {/* 1. INQUIRIES TAB */}
+                {activeTab === 'inquiries' && (
+                  <div className="space-y-6">
+                    <div className="border-b border-white/5 pb-4">
+                      <h3 className="font-display font-extrabold text-xl text-white">Client Inquiry Messages</h3>
+                      <p className="text-xs text-gray-400 font-light mt-1">Review contact inquiries captured from the website inquiry forms.</p>
+                    </div>
+
+                    <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2 no-scrollbar">
+                      {inquiries.map((inq) => (
+                        <div 
+                          key={inq.id}
+                          className={`p-5 rounded-xl border transition-colors ${
+                            inq.status === 'unread' 
+                              ? 'bg-[#1e232e] border-accent/20' 
+                              : 'bg-[#181B22] border-white/5'
+                          }`}
+                        >
+                          {/* Top bar info */}
+                          <div className="flex flex-wrap items-start justify-between gap-4 border-b border-white/5 pb-3 mb-3">
+                            <div>
+                              <div className="flex items-center space-x-2">
+                                <h4 className="font-display font-bold text-white text-base">{inq.name}</h4>
+                                <span className={`text-[9px] px-2 py-0.5 rounded font-bold uppercase tracking-wider ${
+                                  inq.status === 'unread' ? 'bg-accent/20 text-accent border border-accent/20' : 'bg-gray-800 text-gray-400'
+                                }`}>
+                                  {inq.status === 'unread' ? 'New Message' : 'Archived'}
+                                </span>
+                              </div>
+                              <span className="text-[10px] text-gray-400 font-sans block mt-0.5">
+                                {inq.business ? `${inq.business} | ` : ''} Product: <span className="text-accent font-bold capitalize">{inq.product}</span>
+                              </span>
+                            </div>
+
+                            <span className="text-[10px] text-gray-400 font-sans">{formatDate(inq.date)}</span>
+                          </div>
+
+                          {/* Message Content */}
+                          <p className="text-xs text-gray-300 leading-relaxed font-light whitespace-pre-line bg-[#0F1115] p-3 rounded-lg border border-white/5">
+                            {inq.message}
+                          </p>
+
+                          {/* Action list */}
+                          <div className="mt-4 flex items-center justify-between flex-wrap gap-4 pt-1">
+                            <div className="flex items-center space-x-4 text-xs font-light text-gray-400">
+                              <span className="flex items-center"><span className="text-accent font-semibold mr-1">Phone:</span> {inq.phone}</span>
+                              {inq.email && <span className="flex items-center"><span className="text-accent font-semibold mr-1">Email:</span> {inq.email}</span>}
+                            </div>
+
+                            <div className="flex items-center space-x-2">
+                              <button
+                                onClick={() => toggleInquiryStatus(inq.id)}
+                                className="p-2 bg-white/5 hover:bg-white/10 rounded-lg text-gray-300 hover:text-white transition-colors cursor-pointer border border-white/5"
+                                title={inq.status === 'unread' ? 'Mark as Read' : 'Mark as Unread'}
+                              >
+                                {inq.status === 'read' ? <Square size={16} /> : <CheckSquare size={16} />}
+                              </button>
+                              
+                              <button
+                                onClick={() => deleteInquiry(inq.id)}
+                                className="p-2 bg-red-950/20 hover:bg-red-500/20 rounded-lg text-red-400 hover:text-red-300 transition-colors border border-red-500/10 cursor-pointer"
+                                title="Delete inquiry permanently"
+                              >
+                                <Trash2 size={16} />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+
+                      {inquiries.length === 0 && (
+                        <div className="text-center py-16 text-gray-500 text-sm font-light">
+                          No inquiries received yet. Try submitting the contact form on the contact page.
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* 2. IMAGES TAB */}
+                {activeTab === 'images' && (
+                  <div className="space-y-6">
+                    <div className="flex items-center justify-between border-b border-white/5 pb-4">
+                      <div>
+                        <h3 className="font-display font-extrabold text-xl text-white">Website Image Manager</h3>
+                        <p className="text-xs text-gray-400 font-light mt-1">Provide external image URLs to dynamically override the local static assets.</p>
+                      </div>
+
+                      <button
+                        onClick={handleResetAllImages}
+                        className="px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/5 text-gray-300 hover:text-accent font-bold text-[10px] tracking-wider rounded-lg transition-colors flex items-center space-x-1.5 uppercase font-display cursor-pointer"
+                      >
+                        <RefreshCw size={11} />
+                        <span>Reset All</span>
+                      </button>
+                    </div>
+
+                    <div className="space-y-6">
+                      {[
+                        { key: 'home_hero_bg', label: 'Home Page Hero Background', desc: 'Main full-bleed background displayed in the landing section.' },
+                        { key: 'peanut', label: 'Peanut (Singdana) Image', desc: 'Product card image and product page illustration for Groundnuts.' },
+                        { key: 'chana', label: 'Chana (Chickpeas) Image', desc: 'Product card and details page illustration for Chana.' },
+                        { key: 'tuwar', label: 'Tuwar (Pigeon Peas) Image', desc: 'Product card and details page illustration for Tuwar.' },
+                        { key: 'wheat', label: 'Wheat Image', desc: 'Product card and details page illustration for Wheat.' },
+                        { key: 'cards_img', label: 'Business Card Graphic', desc: 'Digital Card physical layout mockup displayed on Home page.' },
+                        { key: 'machine_mayor', label: 'Plant Machinery Image', desc: 'Large banner image displayed in the About Us page.' }
+                      ].map((imgItem) => {
+                        const currentVal = imageUrls[imgItem.key];
+                        const resolvedSrc = getImageUrl(imgItem.key);
+                        
+                        return (
+                          <div key={imgItem.key} className="p-5 bg-[#0F1115] border border-white/5 rounded-xl flex flex-col md:flex-row gap-5 items-start">
+                            {/* Preview box */}
+                            <div className="w-full md:w-32 h-20 rounded-lg overflow-hidden border border-white/10 shrink-0 bg-black/40 relative">
+                              <img 
+                                src={resolvedSrc} 
+                                alt={imgItem.label} 
+                                className="w-full h-full object-cover" 
+                              />
+                            </div>
+
+                            {/* Inputs content */}
+                            <div className="flex-grow space-y-3 w-full">
+                              <div>
+                                <h4 className="font-display font-bold text-white text-sm">{imgItem.label}</h4>
+                                <p className="text-[10px] text-gray-400 font-light mt-0.5">{imgItem.desc}</p>
+                              </div>
+
+                              <div className="flex flex-wrap items-center gap-3">
+                                <div className="relative overflow-hidden inline-block">
+                                  <button className="px-4 py-2 bg-accent hover:bg-accent-hover text-primary font-bold text-xs uppercase tracking-wider font-display rounded-lg transition-colors cursor-pointer flex items-center gap-1.5">
+                                    <Plus size={14} className="stroke-[2.5]" />
+                                    <span>Select Image File</span>
+                                  </button>
+                                  <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={(e) => handleImageManagerFileChange(imgItem.key, e)}
+                                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                  />
+                                </div>
+
+                                {currentVal && (
+                                  <button
+                                    onClick={() => resetSingleImage(imgItem.key)}
+                                    className="px-4 py-2 bg-red-950/20 hover:bg-red-500/20 rounded-lg text-red-400 hover:text-red-300 transition-colors border border-red-500/10 cursor-pointer flex items-center gap-1.5"
+                                    title="Reset to local default asset"
+                                  >
+                                    <Trash2 size={13} />
+                                    <span>Reset Default</span>
+                                  </button>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {/* 3. CONTENT (UPDATES & QUOTES) TAB */}
+                {activeTab === 'content' && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    
+                    {/* Left Column: Manage Daily Updates */}
+                    <div className="space-y-6">
+                      <div className="border-b border-white/5 pb-3">
+                        <h3 className="font-display font-extrabold text-lg text-white">Daily Updates</h3>
+                        <p className="text-[10px] text-gray-400 font-light mt-0.5">Post new announcements or market rates to the updates timeline.</p>
+                      </div>
+
+                      {/* Add Update Form */}
+                      <form onSubmit={handleAddUpdate} className="space-y-4 bg-[#0F1115] p-5 rounded-xl border border-white/5">
+                        <div className="space-y-1">
+                          <label className="block text-[9px] font-bold text-white uppercase tracking-wider">Update Title *</label>
+                          <input
+                            type="text"
+                            required
+                            value={newUpdate.title}
+                            onChange={(e) => setNewUpdate(prev => ({ ...prev, title: e.target.value }))}
+                            placeholder="e.g. Optical Camera Line 2 Calibrated"
+                            className="w-full px-3 py-2 bg-[#181B22] border border-white/5 focus:border-accent text-xs text-white rounded-lg outline-none"
+                          />
+                        </div>
+
+                        <div className="space-y-1">
+                          <label className="block text-[9px] font-bold text-white uppercase tracking-wider">Category Category</label>
+                          <select
+                            value={newUpdate.category}
+                            onChange={(e) => setNewUpdate(prev => ({ ...prev, category: e.target.value }))}
+                            className="w-full px-3 py-2 bg-[#181B22] border border-white/5 focus:border-accent text-xs text-white rounded-lg outline-none cursor-pointer"
+                          >
+                            <option value="Plant Operations">Plant Operations</option>
+                            <option value="Market Rates">Market Rates</option>
+                            <option value="Quality updates">Quality updates</option>
+                            <option value="General">General</option>
+                          </select>
+                        </div>
+
+                        <div className="space-y-1">
+                          <label className="block text-[9px] font-bold text-white uppercase tracking-wider">Update Content *</label>
+                          <textarea
+                            required
+                            rows="3"
+                            value={newUpdate.content}
+                            onChange={(e) => setNewUpdate(prev => ({ ...prev, content: e.target.value }))}
+                            placeholder="Describe details..."
+                            className="w-full px-3 py-2 bg-[#181B22] border border-white/5 focus:border-accent text-xs text-white rounded-lg outline-none resize-none"
+                          />
+                        </div>
+
+                        <button
+                          type="submit"
+                          className="w-full py-2 bg-accent hover:bg-accent-hover text-primary font-bold text-xs uppercase tracking-wider font-display rounded-lg transition-colors flex items-center justify-center space-x-1.5 cursor-pointer"
+                        >
+                          <Plus size={13} />
+                          <span>Publish Announcement</span>
+                        </button>
+                      </form>
+
+                      {/* Updates List */}
+                      <div className="space-y-3 max-h-[300px] overflow-y-auto pr-2 no-scrollbar">
+                        {updates.map((up) => (
+                          <div key={up.id} className="p-4 bg-[#0F1115]/60 border border-white/5 rounded-lg flex items-start justify-between gap-3">
+                            <div className="space-y-1">
+                              <span className="text-[8px] font-black text-accent uppercase tracking-widest">{up.category}</span>
+                              <h5 className="font-display font-bold text-white text-xs leading-snug">{up.title}</h5>
+                              <p className="text-[9px] text-gray-400 font-light line-clamp-2">{up.content}</p>
+                            </div>
+                            <button
+                              onClick={() => handleDeleteUpdate(up.id)}
+                              className="p-1.5 bg-red-950/20 hover:bg-red-500/20 text-red-400 hover:text-red-300 rounded border border-red-500/10 cursor-pointer shrink-0"
+                            >
+                              <Trash2 size={12} />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Right Column: Manage Motivational Quotes */}
+                    <div className="space-y-6 border-t md:border-t-0 md:border-l border-white/5 pt-6 md:pt-0 md:pl-8">
+                      <div className="border-b border-white/5 pb-3">
+                        <h3 className="font-display font-extrabold text-lg text-white">Motivational Quotes</h3>
+                        <p className="text-[10px] text-gray-400 font-light mt-0.5">Add motivational statements to display in the side slider.</p>
+                      </div>
+
+                      {/* Add Quote Form */}
+                      <form onSubmit={handleAddQuote} className="space-y-4 bg-[#0F1115] p-5 rounded-xl border border-white/5">
+                        <div className="space-y-1">
+                          <label className="block text-[9px] font-bold text-white uppercase tracking-wider">Quote Text *</label>
+                          <textarea
+                            required
+                            rows="2"
+                            value={newQuote.text}
+                            onChange={(e) => setNewQuote(prev => ({ ...prev, text: e.target.value }))}
+                            placeholder="e.g. Trust is built seed by seed..."
+                            className="w-full px-3 py-2 bg-[#181B22] border border-white/5 focus:border-accent text-xs text-white rounded-lg outline-none resize-none font-light italic"
+                          />
+                        </div>
+
+                        <div className="space-y-1">
+                          <label className="block text-[9px] font-bold text-white uppercase tracking-wider">Author / Source</label>
+                          <input
+                            type="text"
+                            value={newQuote.author}
+                            onChange={(e) => setNewQuote(prev => ({ ...prev, author: e.target.value }))}
+                            placeholder="e.g. Operations Manager (or leave blank)"
+                            className="w-full px-3 py-2 bg-[#181B22] border border-white/5 focus:border-accent text-xs text-white rounded-lg outline-none"
+                          />
+                        </div>
+
+                        <button
+                          type="submit"
+                          className="w-full py-2 bg-accent hover:bg-accent-hover text-primary font-bold text-xs uppercase tracking-wider font-display rounded-lg transition-colors flex items-center justify-center space-x-1.5 cursor-pointer"
+                        >
+                          <Plus size={13} />
+                          <span>Publish Quote</span>
+                        </button>
+                      </form>
+
+                      {/* Quotes List */}
+                      <div className="space-y-3 max-h-[300px] overflow-y-auto pr-2 no-scrollbar">
+                        {quotes.map((q) => (
+                          <div key={q.id} className="p-4 bg-[#0F1115]/60 border border-white/5 rounded-lg flex items-start justify-between gap-3">
+                            <div className="space-y-1">
+                              <p className="text-xs text-gray-300 font-light italic leading-relaxed">"{q.text}"</p>
+                              <span className="text-[8px] font-bold text-accent uppercase tracking-widest block mt-1">— {q.author}</span>
+                            </div>
+                            <button
+                              onClick={() => handleDeleteQuote(q.id)}
+                              className="p-1.5 bg-red-950/20 hover:bg-red-500/20 text-red-400 hover:text-red-300 rounded border border-red-500/10 cursor-pointer shrink-0"
+                            >
+                              <Trash2 size={12} />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                  </div>
+                )}
+
+                {/* 4. GALLERY PHOTOS TAB */}
+                {activeTab === 'gallery' && (
+                  <div className="space-y-6">
+                    <div className="border-b border-white/5 pb-4">
+                      <h3 className="font-display font-extrabold text-xl text-white">Media Gallery Photo Manager</h3>
+                      <p className="text-xs text-gray-400 font-light mt-1">Upload, categorize, and organize photos in the website's public gallery.</p>
+                    </div>
+
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                      
+                      {/* Left: Add Photo Form (5 cols) */}
+                      <div className="lg:col-span-5 bg-[#0F1115] p-5 rounded-xl border border-white/5 space-y-4">
+                        <h4 className="font-display font-bold text-sm text-white">Add Photo to Gallery</h4>
+                        
+                        <form onSubmit={handleAddPhoto} className="space-y-4">
+                          <div className="space-y-1">
+                            <label className="block text-[9px] font-bold text-white uppercase tracking-wider">Photo Title *</label>
+                            <input
+                              type="text"
+                              required
+                              value={newPhoto.title}
+                              onChange={(e) => setNewPhoto(prev => ({ ...prev, title: e.target.value }))}
+                              placeholder="e.g. Grain Sorting Machine Line"
+                              className="w-full px-3 py-2 bg-[#181B22] border border-white/5 focus:border-accent text-xs text-white rounded-lg outline-none"
+                            />
+                          </div>
+
+                          <div className="space-y-1">
+                            <label className="block text-[9px] font-bold text-white uppercase tracking-wider">Category</label>
+                            <select
+                              value={newPhoto.category}
+                              onChange={(e) => setNewPhoto(prev => ({ ...prev, category: e.target.value }))}
+                              className="w-full px-3 py-2 bg-[#181B22] border border-white/5 focus:border-accent text-xs text-white rounded-lg outline-none cursor-pointer"
+                            >
+                              <option value="factory">Factory</option>
+                              <option value="machinery">Machinery</option>
+                              <option value="products">Products</option>
+                              <option value="packing">Packing</option>
+                              <option value="warehouse">Warehouse</option>
+                            </select>
+                          </div>
+
+                          <div className="space-y-1">
+                            <label className="block text-[9px] font-bold text-white uppercase tracking-wider">Upload Image *</label>
+                            <div className="relative border border-dashed border-white/10 hover:border-accent/40 rounded-lg p-4 text-center cursor-pointer bg-[#181B22] transition-colors">
+                              <input
+                                key={fileInputKey}
+                                type="file"
+                                accept="image/*"
+                                required
+                                onChange={handleFileChange}
+                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                              />
+                              <div className="space-y-2">
+                                <div className="flex justify-center text-gray-400">
+                                  <ImageIcon size={20} className="stroke-[1.5]" />
+                                </div>
+                                <div className="text-xs text-gray-300">
+                                  {newPhoto.image ? '✓ Image Loaded' : 'Click to select photo file'}
+                                </div>
+                                <p className="text-[9px] text-gray-500">Supports PNG, JPG, JPEG</p>
+                              </div>
+                            </div>
+                            {newPhoto.image && (
+                              <div className="mt-2 w-full h-24 rounded-lg overflow-hidden border border-white/5 bg-black/40 relative">
+                                <img src={newPhoto.image} alt="Upload preview" className="w-full h-full object-cover" />
+                              </div>
+                            )}
+                          </div>
+
+                          <button
+                            type="submit"
+                            className="w-full py-2.5 bg-accent hover:bg-accent-hover text-primary font-bold text-xs uppercase tracking-wider font-display rounded-lg transition-colors flex items-center justify-center space-x-1.5 cursor-pointer"
+                          >
+                            <Plus size={14} />
+                            <span>Add Photo to Gallery</span>
+                          </button>
+                        </form>
+                      </div>
+
+                      {/* Right: Grid of Photos (7 cols) */}
+                      <div className="lg:col-span-7 space-y-4">
+                        <h4 className="font-display font-bold text-sm text-white">Active Gallery Photos ({galleryItems.length})</h4>
+                        
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-h-[500px] overflow-y-auto pr-2 no-scrollbar">
+                          {galleryItems.map((photo, idx) => (
+                            <div key={idx} className="p-3 bg-[#0F1115]/50 border border-white/5 rounded-xl flex items-center gap-3 relative group hover:border-white/10 transition-colors">
+                              {/* Preview thumbnail */}
+                              <div className="w-14 h-14 rounded-lg overflow-hidden border border-white/10 bg-black/40 shrink-0">
+                                <img src={photo.image} alt={photo.title} className="w-full h-full object-cover" />
+                              </div>
+
+                              {/* Info details */}
+                              <div className="min-w-0 flex-grow pr-6">
+                                <h5 className="font-display font-bold text-xs text-white truncate">{photo.title}</h5>
+                                <span className="text-[8px] font-black text-accent uppercase tracking-widest bg-accent/10 px-1.5 py-0.5 rounded border border-accent/10 inline-block mt-1 capitalize">
+                                  {photo.category}
+                                </span>
+                              </div>
+
+                              {/* Delete action button */}
+                              <button
+                                onClick={() => handleDeletePhoto(idx)}
+                                className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 bg-red-950/20 hover:bg-red-500/20 text-red-400 hover:text-red-300 rounded border border-red-500/10 cursor-pointer"
+                                title="Remove photo"
+                              >
+                                <Trash2 size={12} />
+                              </button>
+                            </div>
+                          ))}
+
+                          {galleryItems.length === 0 && (
+                            <div className="col-span-2 text-center py-16 text-gray-500 text-xs font-light">
+                              No photos in the gallery. Use the form on the left to add your first photo.
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                )}
+
+              </div>
+            </div>
+
+          </div>
+        )}
+
+      </div>
+    </div>
+  );
+}

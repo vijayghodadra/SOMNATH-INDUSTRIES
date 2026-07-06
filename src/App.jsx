@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Analytics } from '@vercel/analytics/react';
@@ -9,14 +9,16 @@ import Footer from './components/Footer';
 import LoadingScreen from './components/LoadingScreen';
 import FloatingActions from './components/FloatingActions';
 
-// Pages
-import Home from './pages/Home';
-import About from './pages/About';
-import Services from './pages/Services';
-import Products from './pages/Products';
-import Gallery from './pages/Gallery';
-import Contact from './pages/Contact';
-import DigitalCard from './pages/DigitalCard';
+// Lazy loaded Pages
+const Home = lazy(() => import('./pages/Home'));
+const About = lazy(() => import('./pages/About'));
+const Services = lazy(() => import('./pages/Services'));
+const Products = lazy(() => import('./pages/Products'));
+const Gallery = lazy(() => import('./pages/Gallery'));
+const Contact = lazy(() => import('./pages/Contact'));
+const DigitalCard = lazy(() => import('./pages/DigitalCard'));
+const Admin = lazy(() => import('./pages/Admin'));
+const Updates = lazy(() => import('./pages/Updates'));
 
 // Scroll to Top on Route Change
 function ScrollToTop() {
@@ -68,17 +70,25 @@ export default function App() {
               exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.35, ease: 'easeInOut' }}
             >
-              <Routes location={location}>
-                <Route path="/" element={<Home />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/services" element={<Services />} />
-                <Route path="/products" element={<Products />} />
-                <Route path="/gallery" element={<Gallery />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/card" element={<DigitalCard />} />
-                <Route path="/digital-card" element={<DigitalCard />} />
-                <Route path="*" element={<Home />} />
-              </Routes>
+              <Suspense fallback={
+                <div className="h-screen w-full bg-[#0F1115] flex items-center justify-center">
+                  <div className="w-8 h-8 border-2 border-accent border-t-transparent rounded-full animate-spin" />
+                </div>
+              }>
+                <Routes location={location}>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/services" element={<Services />} />
+                  <Route path="/products" element={<Products />} />
+                  <Route path="/gallery" element={<Gallery />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/card" element={<DigitalCard />} />
+                  <Route path="/digital-card" element={<DigitalCard />} />
+                  <Route path="/admin" element={<Admin />} />
+                  <Route path="/updates" element={<Updates />} />
+                  <Route path="*" element={<Home />} />
+                </Routes>
+              </Suspense>
             </motion.div>
           </AnimatePresence>
         </main>

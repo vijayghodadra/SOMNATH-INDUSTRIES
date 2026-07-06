@@ -2,10 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Cog, PhoneCall, ChevronDown, ArrowRight } from 'lucide-react';
-import peanutImg from '../assets/Peanut.jpg';
-import chanaImg from '../assets/Chana.jpg';
-import tuwarImg from '../assets/Tuwar.jpg';
-import wheatImg from '../assets/Wheat.png';
+import { getImageUrl } from '../utils/imageHelper';
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -34,14 +31,17 @@ export default function Navbar() {
     setIsMegaOpen(false);
   }, [location]);
 
+  const isAdmin = sessionStorage.getItem('somnath_admin_logged_in') === 'true';
+
   const navLinks = [
     { name: 'Home', path: '/' },
-    { name: 'About Us', path: '/about' },
     { name: 'Services', path: '/services' },
     { name: 'Products', path: '/products', isMega: true },
+    { name: 'About Us', path: '/about' },
     { name: 'Media Gallery', path: '/gallery' },
-    { name: 'Business Card', path: '/card' },
-    { name: 'Contact', path: '/contact' },
+    { name: 'Daily Updates', path: '/updates' },
+    { name: 'Contact Us', path: '/contact' },
+    { name: isAdmin ? 'Admin Panel' : 'Admin Login', path: '/admin' },
   ];
 
   const megaProducts = [
@@ -50,28 +50,28 @@ export default function Navbar() {
       name: 'Peanut (Singdana)',
       variety: 'Bold, Java & TJ Varieties',
       desc: 'Double-sorted, high-purity kernels classified by precise ounce counts.',
-      image: peanutImg,
+      image: getImageUrl('peanut'),
     },
     {
       id: 'chana',
       name: 'Chana (Chickpeas)',
       variety: 'Bengal Gram & Kabuli',
       desc: 'Uniform diameter separation, calibrated for optimal wholesale output.',
-      image: chanaImg,
+      image: getImageUrl('chana'),
     },
     {
       id: 'tuwar',
       name: 'Tuwar (Pigeon Peas)',
       variety: 'Red & White Whole Seeds',
       desc: 'Destoned and aspirated whole peas prepared for premium dehulling mills.',
-      image: tuwarImg,
+      image: getImageUrl('tuwar'),
     },
     {
       id: 'wheat',
       name: 'Wheat',
       variety: 'Lokwan & Tukda Varieties',
       desc: 'Premium cleaned whole wheat grains sorted for mills and exporters.',
-      image: wheatImg,
+      image: getImageUrl('wheat'),
     }
   ];
 
@@ -108,7 +108,7 @@ export default function Navbar() {
               </span>
             </Link>
 
-            <div className="hidden lg:flex items-center space-x-8">
+            <div className="hidden lg:flex items-center space-x-5">
               {navLinks.map((link) => {
                 if (link.isMega) {
                   return (

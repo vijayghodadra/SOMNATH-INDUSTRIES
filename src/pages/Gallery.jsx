@@ -6,8 +6,50 @@ import SEO from '../components/SEO';
 export default function Gallery() {
   const [filter, setFilter] = useState('all');
   const [lightboxIndex, setLightboxIndex] = useState(null);
+  const [galleryItems, setGalleryItems] = useState([]);
 
-  const galleryItems = [];
+  useEffect(() => {
+    const DEFAULT_GALLERY = [
+      {
+        title: 'Advanced CCD Color Sorters',
+        category: 'machinery',
+        image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=800&auto=format&fit=crop'
+      },
+      {
+        title: 'Peanut Size-Grading Decks',
+        category: 'machinery',
+        image: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?q=80&w=800&auto=format&fit=crop'
+      },
+      {
+        title: 'Sondarda Processing Plant Entrance',
+        category: 'factory',
+        image: 'https://images.unsplash.com/photo-1595974482597-4b8da8879bc5?q=80&w=800&auto=format&fit=crop'
+      },
+      {
+        title: 'Double-Sorted Peanut Batch',
+        category: 'products',
+        image: 'https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?q=80&w=800&auto=format&fit=crop'
+      },
+      {
+        title: 'Automated Packing Stations',
+        category: 'packing',
+        image: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=800&auto=format&fit=crop'
+      },
+      {
+        title: 'Finished Inventory Warehouse Silos',
+        category: 'warehouse',
+        image: 'https://images.unsplash.com/photo-1587293852726-70cdb56c2866?q=80&w=800&auto=format&fit=crop'
+      }
+    ];
+
+    const stored = localStorage.getItem('somnath_gallery_items');
+    if (stored) {
+      setGalleryItems(JSON.parse(stored));
+    } else {
+      localStorage.setItem('somnath_gallery_items', JSON.stringify(DEFAULT_GALLERY));
+      setGalleryItems(DEFAULT_GALLERY);
+    }
+  }, []);
 
   const categories = [
     { id: 'all', label: 'All Photos' },

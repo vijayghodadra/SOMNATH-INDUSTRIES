@@ -8,11 +8,7 @@ import {
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import SEO from '../components/SEO';
-import cardsImg from '../assets/Cards.jpeg';
-import peanutImg from '../assets/Peanut.jpg';
-import chanaImg from '../assets/Chana.jpg';
-import tuwarImg from '../assets/Tuwar.jpg';
-import wheatImg from '../assets/Wheat.png';
+import { getImageUrl } from '../utils/imageHelper';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -37,28 +33,28 @@ export default function Home() {
       name: 'Peanut (Singdana)',
       variety: 'Bold & Java Sizes',
       tagline: 'Saurashtra Premium groundnuts sorted for export and roasting.',
-      image: peanutImg
+      image: getImageUrl('peanut')
     },
     {
       id: 'chana',
       name: 'Chana (Chickpeas)',
       variety: 'Bengal Gram / Kabuli',
       tagline: 'Standardized seed sizes, de-stoned and dust-extracted batches.',
-      image: chanaImg
+      image: getImageUrl('chana')
     },
     {
       id: 'tuwar',
       name: 'Tuwar (Pigeon Peas)',
       variety: 'Red & White Varieties',
       tagline: 'Clean whole grains prepared directly for pulse splitting mills.',
-      image: tuwarImg
+      image: getImageUrl('tuwar')
     },
     {
       id: 'wheat',
       name: 'Wheat',
       variety: 'Lokwan & Tukda Varieties',
       tagline: 'Premium cleaned whole grains sorted for mills and exporters.',
-      image: wheatImg
+      image: getImageUrl('wheat')
     }
   ];
 
@@ -148,7 +144,7 @@ export default function Home() {
         <div className="absolute inset-0 z-0">
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-25 scale-105 transition-transform duration-1000"
-            style={{ backgroundImage: `url('https://images.unsplash.com/photo-1595974482597-4b8da8879bc5?q=80&w=2000&auto=format&fit=crop')` }}
+            style={{ backgroundImage: `url(${getImageUrl('home_hero_bg')})` }}
           />
           <div className="absolute inset-0 bg-gradient-to-b from-[#0F1115]/85 via-[#0F1115]/50 to-[#0F1115]" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_30%,#0F1115_90%)]" />
@@ -304,7 +300,7 @@ export default function Home() {
               <div className="absolute -inset-4 bg-accent/5 rounded-2xl blur-3xl pointer-events-none" />
               <div className="relative rounded-2xl overflow-hidden border border-white/10 shadow-premium-lg bg-[#181B22]/30 p-2 sm:p-4 flex items-center justify-center">
                 <img 
-                  src={cardsImg} 
+                  src={getImageUrl('cards_img')} 
                   alt="Somnath Industries Business Card" 
                   className="w-full h-auto object-contain rounded-xl transition-all duration-300 hover:scale-[1.01]"
                 />

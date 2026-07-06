@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Award, ShieldCheck, Settings, Cpu, Target, Compass, Zap } from 'lucide-react';
 import SEO from '../components/SEO';
-import machineMayorImage from '../assets/Machinemayor.jpeg';
+import { getImageUrl } from '../utils/imageHelper';
 
 export default function About() {
   useEffect(() => {
@@ -146,7 +146,7 @@ export default function About() {
               <div className="absolute -inset-4 bg-accent/5 rounded-2xl blur-3xl pointer-events-none" />
               <div className="relative rounded-2xl overflow-hidden border border-white/10 shadow-premium-lg">
                 <img 
-                  src={machineMayorImage} 
+                  src={getImageUrl('machine_mayor')} 
                   alt="Industrial Plant Overview" 
                   className="w-full h-64 sm:h-[450px] object-cover scale-102 hover:scale-100 transition-transform duration-700"
                 />
