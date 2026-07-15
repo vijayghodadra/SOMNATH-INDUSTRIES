@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useMotionValue, useSpring } from 'framer-motion';
+import { motion, useMotionValue, useSpring, AnimatePresence } from 'framer-motion';
 import { 
   ArrowRight, ShieldCheck, Cpu, Users, Truck, CheckCircle2, 
   Award, Settings, Activity, Zap, ChevronRight
@@ -9,6 +9,52 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import SEO from '../components/SEO';
 import { getImageUrl } from '../utils/imageHelper';
+import somnathImg from '../assets/Somnath.jpg';
+import machinemayorImg from '../assets/Machinemayor.jpeg';
+import chanaImg from '../assets/Chana.jpg';
+import tuwarImg from '../assets/Tuwar.jpg';
+import groundnutImg from '../assets/Groundnut.jpeg';
+import wheatImg from '../assets/Wheat.png';
+
+const slideConfig = [
+  {
+    image: somnathImg,
+    fit: 'object-cover sm:object-contain',
+    position: 'object-center',
+    bg: 'bg-[#15181E]',
+    showBlurOnDesktop: true
+  },
+  {
+    image: machinemayorImg,
+    fit: 'object-contain',
+    position: 'object-center',
+    bg: 'bg-black'
+  },
+  {
+    image: chanaImg,
+    fit: 'object-cover',
+    position: 'object-center',
+    bg: 'bg-[#15181E]'
+  },
+  {
+    image: tuwarImg,
+    fit: 'object-contain border-[12px] border-white sm:border-[20px]',
+    position: 'object-center',
+    bg: 'bg-white'
+  },
+  {
+    image: groundnutImg,
+    fit: 'object-cover',
+    position: 'object-center',
+    bg: 'bg-[#15181E]'
+  },
+  {
+    image: wheatImg,
+    fit: 'object-cover',
+    position: 'object-center',
+    bg: 'bg-[#15181E]'
+  }
+];
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -26,6 +72,24 @@ export default function Home() {
 
   // States
   const [activeStep, setActiveStep] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+
+  useEffect(() => {
+    if (isHovered) return;
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slideConfig.length);
+    }, 2500);
+    return () => clearInterval(interval);
+  }, [isHovered]);
+
+  const handlePrevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + slideConfig.length) % slideConfig.length);
+  };
+
+  const handleNextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % slideConfig.length);
+  };
 
   const products = [
     {
@@ -167,9 +231,10 @@ export default function Home() {
         </motion.div>
 
         {/* Content & Stats Container */}
-        <div className="relative z-20 max-w-5xl mx-auto text-center flex flex-col items-center justify-center space-y-16 mt-10">
+        <div className="relative z-20 max-w-5xl mx-auto text-center flex flex-col items-center justify-center space-y-10 mt-10 w-full">
           {/* Hero content */}
-          <div className="space-y-8">
+          <div className="space-y-6 w-full">
+            {/* 1. Badge */}
             <motion.div
               initial={{ opacity: 0, y: -15 }}
               animate={{ opacity: 1, y: 0 }}
@@ -182,6 +247,43 @@ export default function Home() {
               </span>
             </motion.div>
 
+            {/* 2. Image Slideshow Banner (Just images, size-locked aspect ratio and smooth horizontal scroll) */}
+            <div 
+              className="w-full relative px-2 my-6"
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+            >
+              {/* Slides container - locked to cinematic aspect ratio */}
+              <div className="w-full aspect-[16/10] sm:aspect-[2.2/1] max-h-[380px] overflow-hidden rounded-[24px] relative shadow-premium">
+                <AnimatePresence initial={false} mode="popLayout">
+                  <motion.div
+                    key={currentSlide}
+                    initial={{ x: '100%' }}
+                    animate={{ x: 0 }}
+                    exit={{ x: '-100%' }}
+                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                    className={`absolute inset-0 w-full h-full flex items-center justify-center overflow-hidden transition-colors duration-500 ${slideConfig[currentSlide].bg}`}
+                  >
+                    {/* Dynamic ambient blur backdrop ONLY for specific desktop images */}
+                    {slideConfig[currentSlide].showBlurOnDesktop && (
+                      <img
+                        src={slideConfig[currentSlide].image}
+                        alt=""
+                        className="hidden sm:block absolute inset-0 w-full h-full object-cover blur-3xl opacity-35 scale-110 pointer-events-none"
+                      />
+                    )}
+                    {/* Sharp main image - size-locked and custom-fitted */}
+                    <img
+                      src={slideConfig[currentSlide].image}
+                      alt={`Somnath slide ${currentSlide}`}
+                      className={`relative z-10 w-full h-full ${slideConfig[currentSlide].fit} ${slideConfig[currentSlide].position}`}
+                    />
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            </div>
+
+            {/* 3. Heading */}
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -192,6 +294,7 @@ export default function Home() {
               <span className="text-accent text-gradient">Agriculture Processing</span>
             </motion.h1>
 
+            {/* 4. Subtitle */}
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -201,6 +304,7 @@ export default function Home() {
               A bespoke post-harvest sorting, grading, and packaging facility serving grain and groundnut exporters. Built on absolute quality control.
             </motion.p>
 
+            {/* 5. Buttons */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
