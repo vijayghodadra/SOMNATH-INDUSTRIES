@@ -201,7 +201,7 @@ export default function Home() {
 
       {/* 1. HERO SECTION */}
       <section 
-        className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden py-20 px-4 sm:px-6 lg:px-8"
+        className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden pt-24 pb-6 sm:pt-28 sm:pb-8 px-4 sm:px-6 lg:px-8"
         onMouseMove={handleMouseMove}
       >
         {/* Cinematic Industrial Background Overlay */}
@@ -231,9 +231,9 @@ export default function Home() {
         </motion.div>
 
         {/* Content & Stats Container */}
-        <div className="relative z-20 max-w-5xl mx-auto text-center flex flex-col items-center justify-center space-y-10 mt-10 w-full">
+        <div className="relative z-20 max-w-5xl mx-auto text-center flex flex-col items-center justify-center space-y-6 mt-4 w-full">
           {/* Hero content */}
-          <div className="space-y-5 w-full">
+          <div className="space-y-4 w-full">
             {/* 1. Badge */}
             <motion.div
               initial={{ opacity: 0, y: -15 }}
@@ -249,12 +249,12 @@ export default function Home() {
 
             {/* 2. Image Slideshow Banner (Just images, size-locked aspect ratio and smooth horizontal scroll) */}
             <div 
-              className="w-full relative px-2 my-6"
+              className="w-full relative px-2 my-3"
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
             >
               {/* Slides container - locked to cinematic aspect ratio */}
-              <div className="w-full aspect-[16/10] sm:aspect-[2.2/1] max-h-[380px] overflow-hidden rounded-[24px] relative shadow-premium">
+              <div className="w-full aspect-[16/10] sm:aspect-[2.6/1] max-h-[220px] sm:max-h-[240px] md:max-h-[260px] overflow-hidden rounded-[24px] relative shadow-premium">
                 <AnimatePresence initial={false} mode="popLayout">
                   <motion.div
                     key={currentSlide}
@@ -309,7 +309,7 @@ export default function Home() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.6, duration: 0.8 }}
-              className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-1"
+              className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-0"
             >
               <Link
                 to="/contact"
