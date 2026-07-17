@@ -233,7 +233,7 @@ export default function Home() {
         {/* Content & Stats Container */}
         <div className="relative z-20 max-w-5xl mx-auto text-center flex flex-col items-center justify-center space-y-10 mt-10 w-full">
           {/* Hero content */}
-          <div className="space-y-6 w-full">
+          <div className="space-y-5 w-full">
             {/* 1. Badge */}
             <motion.div
               initial={{ opacity: 0, y: -15 }}
@@ -288,7 +288,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.8 }}
-              className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight leading-[1.1] font-display text-white"
+              className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.1] font-display text-white"
             >
               Custom Brand <br className="hidden sm:inline" />
               <span className="text-accent text-gradient">Agriculture Processing</span>
@@ -309,7 +309,7 @@ export default function Home() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.6, duration: 0.8 }}
-              className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4"
+              className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-1"
             >
               <Link
                 to="/contact"
