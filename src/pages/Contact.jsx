@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import SEO from '../components/SEO';
 import qrImage from '../assets/qr.png';
+import { supabase, isSupabaseConfigured } from '../utils/supabaseClient';
 
 export default function Contact() {
   const location = useLocation();
@@ -89,47 +90,68 @@ export default function Contact() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
 
     setIsSubmitting(true);
 
-    // Mock API call and LocalStorage write
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setSubmitSuccess(true);
+    const newInq = {
+      name: formData.name.trim(),
+      phone: formData.phone.trim(),
+      email: formData.email.trim(),
+      business: formData.business.trim(),
+      product: formData.product,
+      message: formData.message.trim(),
+      date: new Date().toISOString(),
+      status: 'unread'
+    };
 
-      // Save inquiry to localStorage for admin panel
+    if (isSupabaseConfigured) {
       try {
-        const stored = localStorage.getItem('somnath_inquiries');
-        const existing = stored ? JSON.parse(stored) : [];
-        const newInq = {
-          id: `inq-${Date.now()}`,
-          name: formData.name,
-          phone: formData.phone,
-          email: formData.email,
-          business: formData.business,
-          product: formData.product,
-          message: formData.message,
-          date: new Date().toISOString(),
-          status: 'unread'
-        };
-        localStorage.setItem('somnath_inquiries', JSON.stringify([newInq, ...existing]));
-      } catch (err) {
-        console.error('Error writing inquiry to localStorage:', err);
-      }
+        const { error } = await supabase
+          .from('somnath_inquiries')
+          .insert([newInq]);
 
-      // Reset form
-      setFormData({
-        name: '',
-        phone: '',
-        email: '',
-        business: '',
-        product: 'general',
-        message: ''
-      });
-    }, 1500);
+        if (error) throw error;
+        
+        setSubmitSuccess(true);
+      } catch (err) {
+        console.error('Error writing inquiry to Supabase, falling back to localStorage:', err);
+        saveInquiryToLocalStorage(newInq);
+        setSubmitSuccess(true);
+      } finally {
+        setIsSubmitting(false);
+      }
+    } else {
+      // Fallback
+      setTimeout(() => {
+        saveInquiryToLocalStorage(newInq);
+        setIsSubmitting(false);
+        setSubmitSuccess(true);
+      }, 1000);
+    }
+
+    // Reset form
+    setFormData({
+      name: '',
+      phone: '',
+      email: '',
+      business: '',
+      product: 'general',
+      message: ''
+    });
+  };
+
+  const saveInquiryToLocalStorage = (newInq) => {
+    try {
+      const stored = localStorage.getItem('somnath_inquiries');
+      const existing = stored ? JSON.parse(stored) : [];
+      newInq.id = `inq-${Date.now()}`;
+      localStorage.setItem('somnath_inquiries', JSON.stringify([newInq, ...existing]));
+    } catch (err) {
+      console.error('Error writing inquiry to localStorage:', err);
+    }
   };
 
   return (

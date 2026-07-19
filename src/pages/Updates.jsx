@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Clock, Quote, Sparkles, TrendingUp, Calendar, Info } from 'lucide-react';
 import SEO from '../components/SEO';
+import { supabase, isSupabaseConfigured } from '../utils/supabaseClient';
 
 const DEFAULT_UPDATES = [
   {
@@ -45,24 +46,116 @@ export default function Updates() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    
-    // Load updates
-    const storedUpdates = localStorage.getItem('somnath_updates');
-    if (storedUpdates) {
-      setUpdates(JSON.parse(storedUpdates));
-    } else {
-      localStorage.setItem('somnath_updates', JSON.stringify(DEFAULT_UPDATES));
-      setUpdates(DEFAULT_UPDATES);
-    }
 
-    // Load quotes
-    const storedQuotes = localStorage.getItem('somnath_quotes');
-    if (storedQuotes) {
-      setQuotes(JSON.parse(storedQuotes));
-    } else {
-      localStorage.setItem('somnath_quotes', JSON.stringify(DEFAULT_QUOTES));
-      setQuotes(DEFAULT_QUOTES);
-    }
+    const fetchUpdatesAndQuotes = async () => {
+      if (isSupabaseConfigured) {
+        // Fetch Updates
+        try {
+          const { data: updateData, error: updateError } = await supabase
+            .from('somnath_updates')
+            .select('*')
+            .order('date', { ascending: false });
+
+          if (updateError) throw updateError;
+
+          if (updateData && updateData.length > 0) {
+            setUpdates(updateData);
+          } else {
+            // Seed Updates
+            const isSeeded = localStorage.getItem('somnath_updates_seeded') === 'true';
+            if (!isSeeded) {
+              const seedData = DEFAULT_UPDATES.map(u => ({
+                title: u.title,
+                category: u.category,
+                content: u.content,
+                date: u.date
+              }));
+              const { data: insertedData, error: seedError } = await supabase
+                .from('somnath_updates')
+                .insert(seedData)
+                .select();
+              
+              if (!seedError) {
+                localStorage.setItem('somnath_updates_seeded', 'true');
+                setUpdates(insertedData || []);
+              } else {
+                console.error('Error seeding updates:', seedError);
+                setUpdates([]);
+              }
+            } else {
+              setUpdates([]);
+            }
+          }
+        } catch (err) {
+          console.error('Error fetching updates from Supabase:', err);
+          loadUpdatesFromLocalStorage();
+        }
+
+        // Fetch Quotes
+        try {
+          const { data: quoteData, error: quoteError } = await supabase
+            .from('somnath_quotes')
+            .select('*');
+
+          if (quoteError) throw quoteError;
+
+          if (quoteData && quoteData.length > 0) {
+            setQuotes(quoteData);
+          } else {
+            // Seed Quotes
+            const isSeeded = localStorage.getItem('somnath_quotes_seeded') === 'true';
+            if (!isSeeded) {
+              const seedData = DEFAULT_QUOTES.map(q => ({
+                text: q.text,
+                author: q.author
+              }));
+              const { data: insertedData, error: seedError } = await supabase
+                .from('somnath_quotes')
+                .insert(seedData)
+                .select();
+
+              if (!seedError) {
+                localStorage.setItem('somnath_quotes_seeded', 'true');
+                setQuotes(insertedData || []);
+              } else {
+                console.error('Error seeding quotes:', seedError);
+                setQuotes([]);
+              }
+            } else {
+              setQuotes([]);
+            }
+          }
+        } catch (err) {
+          console.error('Error fetching quotes from Supabase:', err);
+          loadQuotesFromLocalStorage();
+        }
+      } else {
+        loadUpdatesFromLocalStorage();
+        loadQuotesFromLocalStorage();
+      }
+    };
+
+    const loadUpdatesFromLocalStorage = () => {
+      const storedUpdates = localStorage.getItem('somnath_updates');
+      if (storedUpdates) {
+        setUpdates(JSON.parse(storedUpdates));
+      } else {
+        localStorage.setItem('somnath_updates', JSON.stringify(DEFAULT_UPDATES));
+        setUpdates(DEFAULT_UPDATES);
+      }
+    };
+
+    const loadQuotesFromLocalStorage = () => {
+      const storedQuotes = localStorage.getItem('somnath_quotes');
+      if (storedQuotes) {
+        setQuotes(JSON.parse(storedQuotes));
+      } else {
+        localStorage.setItem('somnath_quotes', JSON.stringify(DEFAULT_QUOTES));
+        setQuotes(DEFAULT_QUOTES);
+      }
+    };
+
+    fetchUpdatesAndQuotes();
   }, []);
 
   const categories = ['All', 'Plant Operations', 'Market Rates', 'Quality updates', 'General'];

@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { getImageUrl, setImageUrl, resetImages } from '../utils/imageHelper';
 import SEO from '../components/SEO';
+import { supabase, isSupabaseConfigured } from '../utils/supabaseClient';
 
 const DEFAULT_PASSCODE = 'SomnathAdmin@2026';
 
@@ -55,27 +56,62 @@ export default function Admin() {
     }
   }, []);
 
-  const loadDashboardData = () => {
-    // Inquiries
-    const storedInquiries = localStorage.getItem('somnath_inquiries');
-    setInquiries(storedInquiries ? JSON.parse(storedInquiries) : []);
+  const loadDashboardData = async () => {
+    if (isSupabaseConfigured) {
+      try {
+        // Fetch inquiries
+        const { data: inqs, error: inqsErr } = await supabase
+          .from('somnath_inquiries')
+          .select('*')
+          .order('date', { ascending: false });
+        if (!inqsErr) setInquiries(inqs || []);
 
-    // Updates
-    const storedUpdates = localStorage.getItem('somnath_updates');
-    if (storedUpdates) {
-      setUpdates(JSON.parse(storedUpdates));
-    }
+        // Fetch updates
+        const { data: ups, error: upsErr } = await supabase
+          .from('somnath_updates')
+          .select('*')
+          .order('date', { ascending: false });
+        if (!upsErr) setUpdates(ups || []);
 
-    // Quotes
-    const storedQuotes = localStorage.getItem('somnath_quotes');
-    if (storedQuotes) {
-      setQuotes(JSON.parse(storedQuotes));
-    }
+        // Fetch quotes
+        const { data: qts, error: qtsErr } = await supabase
+          .from('somnath_quotes')
+          .select('*')
+          .order('id', { ascending: false });
+        if (!qtsErr) setQuotes(qts || []);
 
-    // Gallery
-    const storedGallery = localStorage.getItem('somnath_gallery_items');
-    if (storedGallery) {
-      setGalleryItems(JSON.parse(storedGallery));
+        // Fetch gallery
+        const { data: gal, error: galErr } = await supabase
+          .from('somnath_gallery')
+          .select('*')
+          .order('created_at', { ascending: false });
+        if (!galErr) setGalleryItems(gal || []);
+
+      } catch (err) {
+        console.error('Error loading admin dashboard data from Supabase:', err);
+      }
+    } else {
+      // Inquiries
+      const storedInquiries = localStorage.getItem('somnath_inquiries');
+      setInquiries(storedInquiries ? JSON.parse(storedInquiries) : []);
+
+      // Updates
+      const storedUpdates = localStorage.getItem('somnath_updates');
+      if (storedUpdates) {
+        setUpdates(JSON.parse(storedUpdates));
+      }
+
+      // Quotes
+      const storedQuotes = localStorage.getItem('somnath_quotes');
+      if (storedQuotes) {
+        setQuotes(JSON.parse(storedQuotes));
+      }
+
+      // Gallery
+      const storedGallery = localStorage.getItem('somnath_gallery_items');
+      if (storedGallery) {
+        setGalleryItems(JSON.parse(storedGallery));
+      }
     }
 
     // Load active image manager values
@@ -115,24 +151,62 @@ export default function Admin() {
   };
 
   // --- Tab 1: Inquiries actions ---
-  const toggleInquiryStatus = (id) => {
-    const updated = inquiries.map(inq => {
-      if (inq.id === id) {
-        return { ...inq, status: inq.status === 'read' ? 'unread' : 'read' };
+  const toggleInquiryStatus = async (id) => {
+    const inquiry = inquiries.find(inq => inq.id === id);
+    if (!inquiry) return;
+
+    const newStatus = inquiry.status === 'read' ? 'unread' : 'read';
+
+    if (isSupabaseConfigured) {
+      try {
+        const { error } = await supabase
+          .from('somnath_inquiries')
+          .update({ status: newStatus })
+          .eq('id', id);
+
+        if (error) throw error;
+        
+        setInquiries(prev => prev.map(inq => inq.id === id ? { ...inq, status: newStatus } : inq));
+        triggerSuccess('Inquiry status updated.');
+      } catch (err) {
+        console.error('Error updating inquiry status in Supabase:', err);
       }
-      return inq;
-    });
-    setInquiries(updated);
-    localStorage.setItem('somnath_inquiries', JSON.stringify(updated));
-    triggerSuccess('Inquiry status updated.');
+    } else {
+      const updated = inquiries.map(inq => {
+        if (inq.id === id) {
+          return { ...inq, status: newStatus };
+        }
+        return inq;
+      });
+      setInquiries(updated);
+      localStorage.setItem('somnath_inquiries', JSON.stringify(updated));
+      triggerSuccess('Inquiry status updated.');
+    }
   };
 
-  const deleteInquiry = (id) => {
+  const deleteInquiry = async (id) => {
     if (!window.confirm('Delete this inquiry message permanently?')) return;
-    const filtered = inquiries.filter(inq => inq.id !== id);
-    setInquiries(filtered);
-    localStorage.setItem('somnath_inquiries', JSON.stringify(filtered));
-    triggerSuccess('Inquiry deleted.');
+
+    if (isSupabaseConfigured) {
+      try {
+        const { error } = await supabase
+          .from('somnath_inquiries')
+          .delete()
+          .eq('id', id);
+
+        if (error) throw error;
+
+        setInquiries(prev => prev.filter(inq => inq.id !== id));
+        triggerSuccess('Inquiry deleted.');
+      } catch (err) {
+        console.error('Error deleting inquiry in Supabase:', err);
+      }
+    } else {
+      const filtered = inquiries.filter(inq => inq.id !== id);
+      setInquiries(filtered);
+      localStorage.setItem('somnath_inquiries', JSON.stringify(filtered));
+      triggerSuccess('Inquiry deleted.');
+    }
   };
 
   // --- Tab 2: Image overrides actions ---
@@ -198,57 +272,133 @@ export default function Admin() {
   };
 
   // --- Tab 3: Updates CRUD ---
-  const handleAddUpdate = (e) => {
+  const handleAddUpdate = async (e) => {
     e.preventDefault();
     if (!newUpdate.title.trim() || !newUpdate.content.trim()) return;
 
     const added = {
-      id: `u-${Date.now()}`,
-      title: newUpdate.title,
+      title: newUpdate.title.trim(),
       category: newUpdate.category,
-      content: newUpdate.content,
+      content: newUpdate.content.trim(),
       date: new Date().toISOString()
     };
 
-    const updatedList = [added, ...updates];
-    setUpdates(updatedList);
-    localStorage.setItem('somnath_updates', JSON.stringify(updatedList));
-    setNewUpdate({ title: '', category: 'Plant Operations', content: '' });
-    triggerSuccess('Daily Update posted successfully.');
+    if (isSupabaseConfigured) {
+      try {
+        const { data, error } = await supabase
+          .from('somnath_updates')
+          .insert([added])
+          .select();
+
+        if (error) throw error;
+
+        if (data && data[0]) {
+          setUpdates(prev => [data[0], ...prev]);
+        } else {
+          loadDashboardData();
+        }
+        setNewUpdate({ title: '', category: 'Plant Operations', content: '' });
+        triggerSuccess('Daily Update posted successfully.');
+      } catch (err) {
+        console.error('Error adding update to Supabase:', err);
+      }
+    } else {
+      const addedLocal = { ...added, id: `u-${Date.now()}` };
+      const updatedList = [addedLocal, ...updates];
+      setUpdates(updatedList);
+      localStorage.setItem('somnath_updates', JSON.stringify(updatedList));
+      setNewUpdate({ title: '', category: 'Plant Operations', content: '' });
+      triggerSuccess('Daily Update posted successfully.');
+    }
   };
 
-  const handleDeleteUpdate = (id) => {
+  const handleDeleteUpdate = async (id) => {
     if (!window.confirm('Delete this update post?')) return;
-    const filtered = updates.filter(up => up.id !== id);
-    setUpdates(filtered);
-    localStorage.setItem('somnath_updates', JSON.stringify(filtered));
-    triggerSuccess('Update post removed.');
+
+    if (isSupabaseConfigured) {
+      try {
+        const { error } = await supabase
+          .from('somnath_updates')
+          .delete()
+          .eq('id', id);
+
+        if (error) throw error;
+
+        setUpdates(prev => prev.filter(up => up.id !== id));
+        triggerSuccess('Update post removed.');
+      } catch (err) {
+        console.error('Error deleting update in Supabase:', err);
+      }
+    } else {
+      const filtered = updates.filter(up => up.id !== id);
+      setUpdates(filtered);
+      localStorage.setItem('somnath_updates', JSON.stringify(filtered));
+      triggerSuccess('Update post removed.');
+    }
   };
 
   // --- Tab 3: Quotes CRUD ---
-  const handleAddQuote = (e) => {
+  const handleAddQuote = async (e) => {
     e.preventDefault();
     if (!newQuote.text.trim()) return;
 
     const added = {
-      id: `q-${Date.now()}`,
-      text: newQuote.text,
+      text: newQuote.text.trim(),
       author: newQuote.author.trim() || 'Anonymous'
     };
 
-    const updatedList = [added, ...quotes];
-    setQuotes(updatedList);
-    localStorage.setItem('somnath_quotes', JSON.stringify(updatedList));
-    setNewQuote({ text: '', author: '' });
-    triggerSuccess('Motivational Quote added.');
+    if (isSupabaseConfigured) {
+      try {
+        const { data, error } = await supabase
+          .from('somnath_quotes')
+          .insert([added])
+          .select();
+
+        if (error) throw error;
+
+        if (data && data[0]) {
+          setQuotes(prev => [data[0], ...prev]);
+        } else {
+          loadDashboardData();
+        }
+        setNewQuote({ text: '', author: '' });
+        triggerSuccess('Motivational Quote added.');
+      } catch (err) {
+        console.error('Error adding quote to Supabase:', err);
+      }
+    } else {
+      const addedLocal = { ...added, id: `q-${Date.now()}` };
+      const updatedList = [addedLocal, ...quotes];
+      setQuotes(updatedList);
+      localStorage.setItem('somnath_quotes', JSON.stringify(updatedList));
+      setNewQuote({ text: '', author: '' });
+      triggerSuccess('Motivational Quote added.');
+    }
   };
 
-  const handleDeleteQuote = (id) => {
+  const handleDeleteQuote = async (id) => {
     if (!window.confirm('Delete this motivational quote?')) return;
-    const filtered = quotes.filter(q => q.id !== id);
-    setQuotes(filtered);
-    localStorage.setItem('somnath_quotes', JSON.stringify(filtered));
-    triggerSuccess('Quote removed.');
+
+    if (isSupabaseConfigured) {
+      try {
+        const { error } = await supabase
+          .from('somnath_quotes')
+          .delete()
+          .eq('id', id);
+
+        if (error) throw error;
+
+        setQuotes(prev => prev.filter(q => q.id !== id));
+        triggerSuccess('Quote removed.');
+      } catch (err) {
+        console.error('Error deleting quote in Supabase:', err);
+      }
+    } else {
+      const filtered = quotes.filter(q => q.id !== id);
+      setQuotes(filtered);
+      localStorage.setItem('somnath_quotes', JSON.stringify(filtered));
+      triggerSuccess('Quote removed.');
+    }
   };
 
   // --- Tab 4: Gallery CRUD ---
@@ -290,7 +440,7 @@ export default function Admin() {
     reader.readAsDataURL(file);
   };
 
-  const handleAddPhoto = (e) => {
+  const handleAddPhoto = async (e) => {
     e.preventDefault();
     if (!newPhoto.title.trim() || !newPhoto.image.trim()) return;
 
@@ -300,20 +450,59 @@ export default function Admin() {
       image: newPhoto.image.trim()
     };
 
-    const updatedList = [added, ...galleryItems];
-    setGalleryItems(updatedList);
-    localStorage.setItem('somnath_gallery_items', JSON.stringify(updatedList));
-    setNewPhoto({ title: '', category: 'factory', image: '' });
-    setFileInputKey(prev => prev + 1);
-    triggerSuccess('Photo added to media gallery.');
+    if (isSupabaseConfigured) {
+      try {
+        const { data, error } = await supabase
+          .from('somnath_gallery')
+          .insert([{ ...added, created_at: new Date().toISOString() }])
+          .select();
+
+        if (error) throw error;
+
+        if (data && data[0]) {
+          setGalleryItems(prev => [data[0], ...prev]);
+        } else {
+          loadDashboardData();
+        }
+        setNewPhoto({ title: '', category: 'factory', image: '' });
+        setFileInputKey(prev => prev + 1);
+        triggerSuccess('Photo added to media gallery.');
+      } catch (err) {
+        console.error('Error adding photo to Supabase:', err);
+      }
+    } else {
+      const updatedList = [added, ...galleryItems];
+      setGalleryItems(updatedList);
+      localStorage.setItem('somnath_gallery_items', JSON.stringify(updatedList));
+      setNewPhoto({ title: '', category: 'factory', image: '' });
+      setFileInputKey(prev => prev + 1);
+      triggerSuccess('Photo added to media gallery.');
+    }
   };
 
-  const handleDeletePhoto = (index) => {
+  const handleDeletePhoto = async (index, id) => {
     if (!window.confirm('Remove this photo from the media gallery?')) return;
-    const filtered = galleryItems.filter((_, idx) => idx !== index);
-    setGalleryItems(filtered);
-    localStorage.setItem('somnath_gallery_items', JSON.stringify(filtered));
-    triggerSuccess('Photo removed from media gallery.');
+
+    if (isSupabaseConfigured && id) {
+      try {
+        const { error } = await supabase
+          .from('somnath_gallery')
+          .delete()
+          .eq('id', id);
+
+        if (error) throw error;
+
+        setGalleryItems(prev => prev.filter(item => item.id !== id));
+        triggerSuccess('Photo removed from media gallery.');
+      } catch (err) {
+        console.error('Error deleting photo in Supabase:', err);
+      }
+    } else {
+      const filtered = galleryItems.filter((_, idx) => idx !== index);
+      setGalleryItems(filtered);
+      localStorage.setItem('somnath_gallery_items', JSON.stringify(filtered));
+      triggerSuccess('Photo removed from media gallery.');
+    }
   };
 
   const formatDate = (dateStr) => {
@@ -878,7 +1067,7 @@ export default function Admin() {
 
                               {/* Delete action button */}
                               <button
-                                onClick={() => handleDeletePhoto(idx)}
+                                onClick={() => handleDeletePhoto(idx, photo.id)}
                                 className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 bg-red-950/20 hover:bg-red-500/20 text-red-400 hover:text-red-300 rounded border border-red-500/10 cursor-pointer"
                                 title="Remove photo"
                               >

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, Maximize2 } from 'lucide-react';
 import SEO from '../components/SEO';
+import { supabase, isSupabaseConfigured } from '../utils/supabaseClient';
 
 export default function Gallery() {
   const [filter, setFilter] = useState('all');
@@ -42,13 +43,64 @@ export default function Gallery() {
       }
     ];
 
-    const stored = localStorage.getItem('somnath_gallery_items');
-    if (stored) {
-      setGalleryItems(JSON.parse(stored));
-    } else {
-      localStorage.setItem('somnath_gallery_items', JSON.stringify(DEFAULT_GALLERY));
-      setGalleryItems(DEFAULT_GALLERY);
-    }
+    const fetchGallery = async () => {
+      if (isSupabaseConfigured) {
+        try {
+          const { data, error } = await supabase
+            .from('somnath_gallery')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+          if (error) throw error;
+
+          if (data && data.length > 0) {
+            setGalleryItems(data);
+          } else {
+            // Check if seeded before in database
+            const isSeeded = localStorage.getItem('somnath_gallery_seeded') === 'true';
+            if (!isSeeded) {
+              const seedData = DEFAULT_GALLERY.map(item => ({
+                title: item.title,
+                category: item.category,
+                image: item.image,
+                created_at: new Date().toISOString()
+              }));
+              const { data: insertedData, error: seedError } = await supabase
+                .from('somnath_gallery')
+                .insert(seedData)
+                .select();
+              
+              if (!seedError) {
+                localStorage.setItem('somnath_gallery_seeded', 'true');
+                setGalleryItems(insertedData || []);
+              } else {
+                console.error('Error seeding gallery to Supabase:', seedError);
+                setGalleryItems([]);
+              }
+            } else {
+              setGalleryItems([]);
+            }
+          }
+        } catch (err) {
+          console.error('Error fetching gallery from Supabase:', err);
+          loadFromLocalStorage();
+        }
+      } else {
+        loadFromLocalStorage();
+      }
+    };
+
+    const loadFromLocalStorage = () => {
+      const stored = localStorage.getItem('somnath_gallery_items');
+      if (stored) {
+        setGalleryItems(JSON.parse(stored));
+      } else {
+        localStorage.setItem('somnath_gallery_items', JSON.stringify(DEFAULT_GALLERY));
+        setGalleryItems(DEFAULT_GALLERY);
+      }
+    };
+
+    fetchGallery();
   }, []);
 
   const categories = [
