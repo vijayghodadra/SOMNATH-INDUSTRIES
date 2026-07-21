@@ -761,7 +761,7 @@ export default function Admin() {
                     <div className="space-y-6">
                       {[
                         { key: 'home_hero_bg', label: 'Home Page Hero Background', desc: 'Main full-bleed background displayed in the landing section.' },
-                        { key: 'peanut', label: 'Peanut(સીંગદાણા) Image', desc: 'Product card image and product page illustration for Groundnuts.' },
+                        { key: 'peanut', label: 'Peanuts(સીંગદાણા) Image', desc: 'Product card image and product page illustration for Groundnuts.' },
                         { key: 'chana', label: 'Chickpeas(ચણા) Image', desc: 'Product card and details page illustration for Chana.' },
                         { key: 'tuwar', label: 'Pigeon Peas(તુવેર) Image', desc: 'Product card and details page illustration for Tuwar.' },
                         { key: 'wheat', label: 'Wheat(ઘઉં) Image', desc: 'Product card and details page illustration for Wheat.' },

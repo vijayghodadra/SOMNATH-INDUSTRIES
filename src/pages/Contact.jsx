@@ -385,7 +385,7 @@ export default function Contact() {
                     className="w-full px-4 py-3 rounded-lg border border-white/5 bg-[#0F1115] text-sm text-white outline-none focus:border-accent transition-colors cursor-pointer"
                   >
                     <option value="general">General Inquiry / Services Quote</option>
-                    <option value="peanut">Peanut(સીંગદાણા)</option>
+                    <option value="peanut">Peanuts(સીંગદાણા)</option>
                     <option value="chana">Chickpeas(ચણા)</option>
                     <option value="tuwar">Pigeon Peas(તુવેર)</option>
                     <option value="wheat">Wheat(ઘઉં)</option>

@@ -89,7 +89,7 @@ export default function Footer() {
                 { label: 'Optical Color Sorting', path: '/services#sorting' },
                 { label: 'Size & Weight Grading', path: '/services#grading' },
                 { label: 'Industrial Packaging', path: '/services#packing' },
-                { label: 'Peanut(સીંગદાણા) Processing', path: '/products#peanut' },
+                { label: 'Peanuts(સીંગદાણા) Processing', path: '/products#peanut' },
                 { label: 'Chickpeas(ચણા) Processing', path: '/products#chana' },
                 { label: 'Pigeon Peas(તુવેર) Processing', path: '/products#tuwar' },
                 { label: 'Wheat(ઘઉં) Processing', path: '/products#wheat' },

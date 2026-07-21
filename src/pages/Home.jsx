@@ -102,7 +102,7 @@ export default function Home() {
   const products = [
     {
       id: 'peanut',
-      name: 'Peanut(સીંગદાણા)',
+      name: 'Peanuts(સીંગદાણા)',
       variety: 'Bold & Java Sizes',
       tagline: 'Saurashtra Premium groundnuts sorted for export and roasting.',
       image: getImageUrl('peanut')

@@ -47,7 +47,7 @@ export default function Navbar() {
   const megaProducts = [
     {
       id: 'peanut',
-      name: 'Peanut(સીંગદાણા)',
+      name: 'Peanuts(સીંગદાણા)',
       variety: 'Bold, Java & TJ Varieties',
       desc: 'Double-sorted, high-purity kernels classified by precise ounce counts.',
       image: getImageUrl('peanut'),

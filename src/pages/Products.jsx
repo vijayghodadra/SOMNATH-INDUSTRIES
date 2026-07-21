@@ -8,7 +8,7 @@ export default function Products() {
   const products = [
     {
       id: 'peanut',
-      name: 'Peanut(સીંગદાણા)',
+      name: 'Peanuts(સીંગદાણા)',
       variety: 'Bold, Java & TJ Varieties',
       image: getImageUrl('peanut'),
       description: 'Sourced from the premium groundnut belt of Saurashtra, our peanuts undergo rigid aspirator cleaning, multi-deck size grading, and dual-camera optical sorting to separate discolored, moldy, or shriveled kernels.',
@@ -117,7 +117,7 @@ export default function Products() {
     <div className="relative bg-[#0F1115] text-white">
       <SEO 
         title="Our Products" 
-        description="View agricultural products processed by Somnath Industries: Peanut(સીંગદાણા), Chickpeas(ચણા), Pigeon Peas(તુવેર), Wheat(ઘઉં), and Garbanzo beans(કાબુલી ચણા). Export-grade cleaning, sorting, and grading parameters."
+        description="View agricultural products processed by Somnath Industries: Peanuts(સીંગદાણા), Chickpeas(ચણા), Pigeon Peas(તુવેર), Wheat(ઘઉં), and Garbanzo beans(કાબુલી ચણા). Export-grade cleaning, sorting, and grading parameters."
       />
 
       {/* Page Header Banner */}
