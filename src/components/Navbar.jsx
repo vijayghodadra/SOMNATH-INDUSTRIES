@@ -47,31 +47,38 @@ export default function Navbar() {
   const megaProducts = [
     {
       id: 'peanut',
-      name: 'Peanut (Singdana)',
+      name: 'Peanut(સીંગદાણા)',
       variety: 'Bold, Java & TJ Varieties',
       desc: 'Double-sorted, high-purity kernels classified by precise ounce counts.',
       image: getImageUrl('peanut'),
     },
     {
       id: 'chana',
-      name: 'Chana (Chickpeas)',
-      variety: 'Bengal Gram & Kabuli',
+      name: 'Chickpeas(ચણા)',
+      variety: 'Bengal Gram & Desi',
       desc: 'Uniform diameter separation, calibrated for optimal wholesale output.',
       image: getImageUrl('chana'),
     },
     {
       id: 'tuwar',
-      name: 'Tuwar (Pigeon Peas)',
+      name: 'Pigeon Peas(તુવેર)',
       variety: 'Red & White Whole Seeds',
       desc: 'Destoned and aspirated whole peas prepared for premium dehulling mills.',
       image: getImageUrl('tuwar'),
     },
     {
       id: 'wheat',
-      name: 'Wheat',
+      name: 'Wheat(ઘઉં)',
       variety: 'Lokwan & Tukda Varieties',
       desc: 'Premium cleaned whole wheat grains sorted for mills and exporters.',
       image: getImageUrl('wheat'),
+    },
+    {
+      id: 'kabuli',
+      name: 'Garbanzo beans(કાબુલી ચણા)',
+      variety: 'Dollar & Kabuli Varieties',
+      desc: 'Large size sorted white garbanzo beans (Kabuli) with high optical purity.',
+      image: getImageUrl('kabuli'),
     }
   ];
 

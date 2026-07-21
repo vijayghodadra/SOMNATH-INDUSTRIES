@@ -5,7 +5,7 @@ import SEO from '../components/SEO';
 import { supabase, isSupabaseConfigured } from '../utils/supabaseClient';
 
 export default function Gallery() {
-  const [filter, setFilter] = useState('all');
+  const [filter, setFilter] = useState('factory');
   const [lightboxIndex, setLightboxIndex] = useState(null);
   const [galleryItems, setGalleryItems] = useState([]);
 
@@ -104,7 +104,6 @@ export default function Gallery() {
   }, []);
 
   const categories = [
-    { id: 'all', label: 'All Photos' },
     { id: 'factory', label: 'Factory' },
     { id: 'machinery', label: 'Machinery' },
     { id: 'products', label: 'Products' },
@@ -112,9 +111,7 @@ export default function Gallery() {
     { id: 'warehouse', label: 'Warehouse' }
   ];
 
-  const filteredItems = filter === 'all' 
-    ? galleryItems 
-    : galleryItems.filter(item => item.category === filter);
+  const filteredItems = galleryItems.filter(item => item.category === filter);
 
   useEffect(() => {
     const handleKeyDown = (e) => {

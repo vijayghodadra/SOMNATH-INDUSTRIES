@@ -8,7 +8,7 @@ export default function Products() {
   const products = [
     {
       id: 'peanut',
-      name: 'Peanut (Singdana)',
+      name: 'Peanut(સીંગદાણા)',
       variety: 'Bold, Java & TJ Varieties',
       image: getImageUrl('peanut'),
       description: 'Sourced from the premium groundnut belt of Saurashtra, our peanuts undergo rigid aspirator cleaning, multi-deck size grading, and dual-camera optical sorting to separate discolored, moldy, or shriveled kernels.',
@@ -29,8 +29,8 @@ export default function Products() {
     },
     {
       id: 'chana',
-      name: 'Chana (Chickpeas)',
-      variety: 'Bengal Gram / Desi & Kabuli varieties',
+      name: 'Chickpeas(ચણા)',
+      variety: 'Bengal Gram / Desi varieties',
       image: getImageUrl('chana'),
       description: 'Our Chana processing isolates whole, healthy grains from broken pieces and dust clods. Size graders ensure uniform diameter sorting, which is critical for packaging consistency and predictable cooking times.',
       applications: [
@@ -50,7 +50,7 @@ export default function Products() {
     },
     {
       id: 'tuwar',
-      name: 'Tuwar (Pigeon Peas)',
+      name: 'Pigeon Peas(તુવેર)',
       variety: 'Whole Pigeon Peas / Red & White varieties',
       image: getImageUrl('tuwar'),
       description: 'Processed under strict sanitization settings, our whole Tuwar grains undergo vibratory separation to eliminate clay balls, empty seed shells, and weed seeds. This ensures a clean feed for Dal processing mills.',
@@ -71,7 +71,7 @@ export default function Products() {
     },
     {
       id: 'wheat',
-      name: 'Wheat',
+      name: 'Wheat(ઘઉં)',
       variety: 'Lokwan, Tukda & Sharbati Varieties',
       image: getImageUrl('wheat'),
       description: 'Processed under high-precision cleaning configurations, our wheat grains are separated from chaff, dust, broken seeds, and foreign stones. Dual-pass camera sorters ensure consistent kernel quality for milling and direct export.',
@@ -89,6 +89,27 @@ export default function Products() {
         { name: 'Gluten Content', value: '9.0% - 11.5% Range' },
         { name: 'Cleaning Pass', value: 'Vibratory Grader & Destoner' }
       ]
+    },
+    {
+      id: 'kabuli',
+      name: 'Garbanzo beans(કાબુલી ચણા)',
+      variety: 'Dollar & Kabuli Varieties',
+      image: getImageUrl('kabuli'),
+      description: 'Our Garbanzo Beans (Kabuli Chana) processing isolates large, bold white chickpeas from broken seeds, dust clods, and foreign material. High-resolution optical color sorting ensures premium white color consistency and zero blemish rates, conforming to strict international export standards.',
+      applications: [
+        'International Exports: Premium bold grades ready for direct packaging.',
+        'Canned & Packaged Foods: Uniformly sized beans for consistent hydration.',
+        'Hummus Manufacturers: Cleaned white chickpeas with controlled moisture.',
+        'Wholesale Distribution: Polished, dust-free bags for bulk packaging.'
+      ],
+      specifications: [
+        { name: 'Moisture', value: '9.0% Maximum' },
+        { name: 'Purity Level', value: '99.7% Minimum' },
+        { name: 'Admixture', value: '0.25% Maximum' },
+        { name: 'Broken Seeds', value: '1.0% Maximum' },
+        { name: 'Weeviled Seeds', value: '0.1% Maximum' },
+        { name: 'Sizing Grades', value: '7mm, 8mm, 9mm, 10mm+ Sizes' }
+      ]
     }
   ];
 
@@ -96,7 +117,7 @@ export default function Products() {
     <div className="relative bg-[#0F1115] text-white">
       <SEO 
         title="Our Products" 
-        description="View agricultural products processed by Somnath Industries: Peanuts (Singdana), Chana, and Tuwar. Export-grade cleaning, sorting, and grading parameters."
+        description="View agricultural products processed by Somnath Industries: Peanut(સીંગદાણા), Chickpeas(ચણા), Pigeon Peas(તુવેર), Wheat(ઘઉં), and Garbanzo beans(કાબુલી ચણા). Export-grade cleaning, sorting, and grading parameters."
       />
 
       {/* Page Header Banner */}

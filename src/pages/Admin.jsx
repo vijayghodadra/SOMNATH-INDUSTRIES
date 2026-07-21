@@ -761,10 +761,11 @@ export default function Admin() {
                     <div className="space-y-6">
                       {[
                         { key: 'home_hero_bg', label: 'Home Page Hero Background', desc: 'Main full-bleed background displayed in the landing section.' },
-                        { key: 'peanut', label: 'Peanut (Singdana) Image', desc: 'Product card image and product page illustration for Groundnuts.' },
-                        { key: 'chana', label: 'Chana (Chickpeas) Image', desc: 'Product card and details page illustration for Chana.' },
-                        { key: 'tuwar', label: 'Tuwar (Pigeon Peas) Image', desc: 'Product card and details page illustration for Tuwar.' },
-                        { key: 'wheat', label: 'Wheat Image', desc: 'Product card and details page illustration for Wheat.' },
+                        { key: 'peanut', label: 'Peanut(સીંગદાણા) Image', desc: 'Product card image and product page illustration for Groundnuts.' },
+                        { key: 'chana', label: 'Chickpeas(ચણા) Image', desc: 'Product card and details page illustration for Chana.' },
+                        { key: 'tuwar', label: 'Pigeon Peas(તુવેર) Image', desc: 'Product card and details page illustration for Tuwar.' },
+                        { key: 'wheat', label: 'Wheat(ઘઉં) Image', desc: 'Product card and details page illustration for Wheat.' },
+                        { key: 'kabuli', label: 'Garbanzo beans(કાબુલી ચણા) Image', desc: 'Product card and details page illustration for Garbanzo Beans (Kabuli).' },
                         { key: 'cards_img', label: 'Business Card Graphic', desc: 'Digital Card physical layout mockup displayed on Home page.' },
                         { key: 'machine_mayor', label: 'Plant Machinery Image', desc: 'Large banner image displayed in the About Us page.' }
                       ].map((imgItem) => {

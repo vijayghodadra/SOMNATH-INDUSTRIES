@@ -89,10 +89,11 @@ export default function Footer() {
                 { label: 'Optical Color Sorting', path: '/services#sorting' },
                 { label: 'Size & Weight Grading', path: '/services#grading' },
                 { label: 'Industrial Packaging', path: '/services#packing' },
-                { label: 'Peanut (Singdana) Processing', path: '/products#peanut' },
-                { label: 'Chickpeas (Chana) Processing', path: '/products#chana' },
-                { label: 'Tuwar (Pigeon Peas) Processing', path: '/products#tuwar' },
-                { label: 'Wheat Processing', path: '/products#wheat' },
+                { label: 'Peanut(સીંગદાણા) Processing', path: '/products#peanut' },
+                { label: 'Chickpeas(ચણા) Processing', path: '/products#chana' },
+                { label: 'Pigeon Peas(તુવેર) Processing', path: '/products#tuwar' },
+                { label: 'Wheat(ઘઉં) Processing', path: '/products#wheat' },
+                { label: 'Garbanzo beans(કાબુલી ચણા) Processing', path: '/products#kabuli' },
                 { label: 'Other Agricultural Commodities / Etc.', path: '/contact' },
               ].map((link) => (
                 <li key={link.label}>

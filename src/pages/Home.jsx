@@ -10,6 +10,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import SEO from '../components/SEO';
 import { getImageUrl } from '../utils/imageHelper';
 import somnathImg from '../assets/Somnath.jpg';
+import somnath1Img from '../assets/Somnath1.jpeg';
 import machinemayorImg from '../assets/Machinemayor.jpeg';
 import chanaImg from '../assets/Chana.jpg';
 import tuwarImg from '../assets/Tuwar.jpg';
@@ -19,6 +20,13 @@ import wheatImg from '../assets/Wheat.png';
 const slideConfig = [
   {
     image: somnathImg,
+    fit: 'object-cover sm:object-contain',
+    position: 'object-center',
+    bg: 'bg-[#15181E]',
+    showBlurOnDesktop: true
+  },
+  {
+    image: somnath1Img,
     fit: 'object-cover sm:object-contain',
     position: 'object-center',
     bg: 'bg-[#15181E]',
@@ -94,31 +102,38 @@ export default function Home() {
   const products = [
     {
       id: 'peanut',
-      name: 'Peanut (Singdana)',
+      name: 'Peanut(સીંગદાણા)',
       variety: 'Bold & Java Sizes',
       tagline: 'Saurashtra Premium groundnuts sorted for export and roasting.',
       image: getImageUrl('peanut')
     },
     {
       id: 'chana',
-      name: 'Chana (Chickpeas)',
-      variety: 'Bengal Gram / Kabuli',
+      name: 'Chickpeas(ચણા)',
+      variety: 'Desi Varieties / Bengal Gram',
       tagline: 'Standardized seed sizes, de-stoned and dust-extracted batches.',
       image: getImageUrl('chana')
     },
     {
       id: 'tuwar',
-      name: 'Tuwar (Pigeon Peas)',
+      name: 'Pigeon Peas(તુવેર)',
       variety: 'Red & White Varieties',
       tagline: 'Clean whole grains prepared directly for pulse splitting mills.',
       image: getImageUrl('tuwar')
     },
     {
       id: 'wheat',
-      name: 'Wheat',
+      name: 'Wheat(ઘઉં)',
       variety: 'Lokwan & Tukda Varieties',
       tagline: 'Premium cleaned whole grains sorted for mills and exporters.',
       image: getImageUrl('wheat')
+    },
+    {
+      id: 'kabuli',
+      name: 'Garbanzo beans(કાબુલી ચણા)',
+      variety: 'Dollar & Kabuli Varieties',
+      tagline: 'Premium large-sized white chickpeas sorted to export standards.',
+      image: getImageUrl('kabuli')
     }
   ];
 
@@ -440,7 +455,7 @@ export default function Home() {
           </div>
 
           {/* 3D tilt style product list */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 perspective-1000">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8 perspective-1000">
             {products.map((prod) => (
               <div 
                 key={prod.id}

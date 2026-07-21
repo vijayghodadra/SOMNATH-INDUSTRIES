@@ -33,9 +33,10 @@ export default function Contact() {
         const prod = location.state.defaultProduct.toLowerCase();
         let selectedKey = 'general';
         if (prod.includes('peanut')) selectedKey = 'peanut';
-        else if (prod.includes('chana')) selectedKey = 'chana';
-        else if (prod.includes('tuwar')) selectedKey = 'tuwar';
+        else if (prod.includes('chana') || prod.includes('chickpea')) selectedKey = 'chana';
+        else if (prod.includes('tuwar') || prod.includes('pigeon')) selectedKey = 'tuwar';
         else if (prod.includes('wheat')) selectedKey = 'wheat';
+        else if (prod.includes('kabuli') || prod.includes('garbanzo')) selectedKey = 'kabuli';
 
         setFormData(prev => ({
           ...prev,
@@ -384,10 +385,11 @@ export default function Contact() {
                     className="w-full px-4 py-3 rounded-lg border border-white/5 bg-[#0F1115] text-sm text-white outline-none focus:border-accent transition-colors cursor-pointer"
                   >
                     <option value="general">General Inquiry / Services Quote</option>
-                    <option value="peanut">Peanut (Singdana)</option>
-                    <option value="chana">Chana (Chickpeas)</option>
-                    <option value="tuwar">Tuwar (Pigeon Peas)</option>
-                    <option value="wheat">Wheat</option>
+                    <option value="peanut">Peanut(સીંગદાણા)</option>
+                    <option value="chana">Chickpeas(ચણા)</option>
+                    <option value="tuwar">Pigeon Peas(તુવેર)</option>
+                    <option value="wheat">Wheat(ઘઉં)</option>
+                    <option value="kabuli">Garbanzo beans(કાબુલી ચણા)</option>
                     <option value="other">Other Agricultural Commodities / Etc.</option>
                   </select>
                 </div>

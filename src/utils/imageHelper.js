@@ -4,6 +4,7 @@ import tuwarDefault from '../assets/Tuwar.jpg';
 import wheatDefault from '../assets/Wheat.png';
 import cardsDefault from '../assets/Cards.jpeg';
 import machineMayorDefault from '../assets/Machinemayor.jpeg';
+import kabuliDefault from '../assets/Kabuli.png';
 
 const DEFAULT_IMAGES = {
   home_hero_bg: 'https://images.unsplash.com/photo-1595974482597-4b8da8879bc5?q=80&w=2000&auto=format&fit=crop',
@@ -11,6 +12,7 @@ const DEFAULT_IMAGES = {
   chana: chanaDefault,
   tuwar: tuwarDefault,
   wheat: wheatDefault,
+  kabuli: kabuliDefault,
   cards_img: cardsDefault,
   machine_mayor: machineMayorDefault
 };
