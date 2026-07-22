@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
 import { Cog } from 'lucide-react';
-import logoImg from '../assets/logo.png';
 
 export default function LoadingScreen() {
   return (
@@ -12,13 +11,13 @@ export default function LoadingScreen() {
     >
       <div className="flex flex-col items-center max-w-xs text-center space-y-6">
         {/* Animated Sieve/Cog Icon */}
-        <motion.img
-          src={logoImg}
-          alt="Somnath Industries Logo"
-          animate={{ scale: [1, 1.05, 1] }}
-          transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
-          className="h-16 w-auto object-contain"
-        />
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ repeat: Infinity, duration: 4, ease: 'linear' }}
+          className="text-accent"
+        >
+          <Cog size={64} className="stroke-[1.2]" />
+        </motion.div>
         
         {/* Company Branding */}
         <div className="space-y-2">

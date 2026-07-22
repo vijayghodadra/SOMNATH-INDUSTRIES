@@ -3,7 +3,6 @@ import { NavLink, Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Cog, PhoneCall, ChevronDown, ArrowRight } from 'lucide-react';
 import { getImageUrl } from '../utils/imageHelper';
-import logoImg from '../assets/logo.png';
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -100,14 +99,14 @@ export default function Navbar() {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
-            <Link to="/" className="flex items-center space-x-3 group">
-              <motion.img 
-                src={logoImg}
-                alt="Somnath Industries Logo"
-                whileHover={{ scale: 1.05 }}
-                transition={{ duration: 0.3 }}
-                className="h-9 w-auto object-contain"
-              />
+            <Link to="/" className="flex items-center space-x-2 group">
+              <motion.div 
+                whileHover={{ rotate: 180 }}
+                transition={{ duration: 0.8, ease: 'easeOut' }}
+                className="text-accent"
+              >
+                <Cog size={30} className="stroke-[1.5] animate-spin-slow" />
+              </motion.div>
               <span className="font-display text-xl sm:text-2xl font-extrabold tracking-wider text-white">
                 SOMNATH
                 <span className="text-accent ml-1 font-semibold text-[10px] tracking-[0.2em] block uppercase -mt-1.5 font-sans">
@@ -256,8 +255,8 @@ export default function Navbar() {
             >
               <div className="px-6 py-6 overflow-y-auto">
                 <div className="flex items-center justify-between border-b border-white/5 pb-5">
-                  <div className="flex items-center space-x-2.5">
-                    <img src={logoImg} alt="Somnath Industries Logo" className="h-7 w-auto object-contain" />
+                  <div className="flex items-center space-x-2">
+                    <Cog className="text-accent animate-spin-slow" size={24} />
                     <span className="font-display font-extrabold text-lg text-white tracking-wide">
                       SOMNATH
                       <span className="text-accent block text-[9px] tracking-widest font-semibold uppercase -mt-1 font-sans">
