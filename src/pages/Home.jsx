@@ -21,21 +21,21 @@ import wheatImg from '../assets/Wheat.png';
 const slideConfig = [
   {
     image: somnathImg,
-    fit: 'object-contain p-2 sm:p-4',
+    fit: 'object-contain p-2 sm:p-0',
     position: 'object-center',
     bg: 'bg-[#15181E]',
     showBlurOnDesktop: true
   },
   {
     image: cardImg,
-    fit: 'object-contain p-2 sm:p-4',
+    fit: 'object-contain p-2 sm:p-0',
     position: 'object-center',
     bg: 'bg-[#15181E]',
     showBlurOnDesktop: true
   },
   {
     image: somnath1Img,
-    fit: 'object-contain p-2 sm:p-4',
+    fit: 'object-contain p-2 sm:p-0',
     position: 'object-center',
     bg: 'bg-[#15181E]',
     showBlurOnDesktop: true
