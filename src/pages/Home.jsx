@@ -10,6 +10,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import SEO from '../components/SEO';
 import { getImageUrl } from '../utils/imageHelper';
 import somnathImg from '../assets/Somnath.jpg';
+import cardImg from '../assets/Card.jpeg';
 import somnath1Img from '../assets/Somnath1.jpeg';
 import machinemayorImg from '../assets/Machinemayor.jpeg';
 import chanaImg from '../assets/Chana.jpg';
@@ -20,6 +21,13 @@ import wheatImg from '../assets/Wheat.png';
 const slideConfig = [
   {
     image: somnathImg,
+    fit: 'object-cover sm:object-contain',
+    position: 'object-center',
+    bg: 'bg-[#15181E]',
+    showBlurOnDesktop: true
+  },
+  {
+    image: cardImg,
     fit: 'object-cover sm:object-contain',
     position: 'object-center',
     bg: 'bg-[#15181E]',
