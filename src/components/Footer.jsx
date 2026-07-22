@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Cog, MapPin, Phone, Mail, Clock, MessageSquare, ArrowRight } from 'lucide-react';
+import logoImg from '../assets/logo.png';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -14,8 +15,12 @@ export default function Footer() {
           
           {/* Column 1: Company Logo & Info */}
           <div className="space-y-6">
-            <Link to="/" className="flex items-center space-x-2 group">
-              <Cog className="text-accent group-hover:rotate-180 transition-transform duration-1000 ease-out" size={32} />
+            <Link to="/" className="flex items-center space-x-3 group">
+              <img 
+                src={logoImg} 
+                alt="Somnath Industries Logo" 
+                className="h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-105" 
+              />
               <span className="font-display font-extrabold text-2xl text-white tracking-wider">
                 SOMNATH
                 <span className="text-accent block text-[10px] tracking-[0.2em] font-semibold uppercase -mt-1.5 font-sans">
